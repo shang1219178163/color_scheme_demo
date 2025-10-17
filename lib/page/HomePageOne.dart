@@ -1,4 +1,4 @@
-import 'package:color_scheme_demo/util/ThemeManager.dart';
+import 'package:color_scheme_demo/util/AppThemeService.dart';
 import 'package:flutter/material.dart';
 
 import '../widget/seed_color_box.dart';
@@ -47,14 +47,30 @@ class _HomePageOneState extends State<HomePageOne> with TickerProviderStateMixin
   Widget build(BuildContext context) {
     return Theme(
       data: ThemeData(
-        useMaterial3: true,
+        // useMaterial3: false,
         colorScheme: colorScheme,
+        appBarTheme: AppBarTheme(
+          backgroundColor: colorScheme.onPrimary,
+          foregroundColor: colorScheme.primary,
+          elevation: 0,
+          scrolledUnderElevation: 0,
+          titleTextStyle: TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.w500,
+          ),
+          toolbarTextStyle: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w400,
+          ),
+          actionsIconTheme: IconThemeData(
+            size: 24.0, // 图标大小
+            opacity: 0.8, // 图标透明度
+          ),
+        ),
       ),
       child: Scaffold(
         appBar: AppBar(
           title: const Text('Material 3 组件全集'),
-          backgroundColor: colorScheme.primary,
-          foregroundColor: colorScheme.onPrimary,
           actions: [],
           bottom: TabBar(
             controller: _tabController,

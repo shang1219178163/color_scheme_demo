@@ -1,6 +1,8 @@
+import 'package:color_scheme_demo/util/AppNavigator.dart';
+import 'package:color_scheme_demo/util/AppRouter.dart';
 import 'package:flutter/material.dart';
 
-import '../util/ThemeManager.dart';
+import '../util/AppThemeService.dart';
 import '../widget/seed_color_box.dart';
 
 class HomePage extends StatefulWidget {
@@ -13,16 +15,40 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> with SeedColorMixin {
   @override
   Widget build(BuildContext context) {
+    final seedColor = Colors.red;
     return Theme(
       data: ThemeData(
-        useMaterial3: true,
+        // useMaterial3: false,
         colorScheme: colorScheme,
+        // buttonTheme: ButtonThemeData(
+        //   textTheme: ButtonTextTheme.primary,
+        //   splashColor: seedColor,
+        //   hoverColor: seedColor,
+        //   buttonColor: seedColor,
+        //   focusColor: seedColor,
+        // ),
+        // textTheme: const TextTheme(
+        //   displayLarge: TextStyle(color: Colors.black, fontSize: 96.0, fontWeight: FontWeight.w300),
+        //   displayMedium: TextStyle(color: Colors.black, fontSize: 60.0, fontWeight: FontWeight.w300),
+        //   displaySmall: TextStyle(color: Colors.black, fontSize: 48.0, fontWeight: FontWeight.w400),
+        //   headlineMedium: TextStyle(color: Colors.black, fontSize: 34.0, fontWeight: FontWeight.w400),
+        //   headlineSmall: TextStyle(color: Colors.black, fontSize: 24.0, fontWeight: FontWeight.w400),
+        //   titleLarge: TextStyle(color: Colors.black, fontSize: 20.0, fontWeight: FontWeight.w500),
+        //   titleMedium: TextStyle(color: Colors.black, fontSize: 16.0, fontWeight: FontWeight.w400),
+        //   titleSmall: TextStyle(color: Colors.black, fontSize: 14.0, fontWeight: FontWeight.w500),
+        //   bodyLarge: TextStyle(color: Colors.black, fontSize: 16.0, fontWeight: FontWeight.w400),
+        //   bodyMedium: TextStyle(color: Colors.black, fontSize: 14.0, fontWeight: FontWeight.w400),
+        //   bodySmall: TextStyle(color: Colors.black, fontSize: 12.0, fontWeight: FontWeight.w400),
+        //   labelLarge: TextStyle(color: Colors.red, fontSize: 14.0, fontWeight: FontWeight.w500),
+        //   labelMedium: TextStyle(color: Colors.yellow, fontSize: 14.0, fontWeight: FontWeight.w500),
+        //   labelSmall: TextStyle(color: Colors.green, fontSize: 10.0, fontWeight: FontWeight.w400),
+        // ),
       ),
       child: Scaffold(
         appBar: AppBar(
           title: const Text('ColorScheme 配色方案生成器'),
-          backgroundColor: ThemeManager.instance.colorScheme.primary,
-          foregroundColor: ThemeManager.instance.colorScheme.onPrimary,
+          backgroundColor: AppThemeService.instance.colorScheme.primary,
+          foregroundColor: AppThemeService.instance.colorScheme.onPrimary,
           elevation: 4,
           actions: [
             // IconButton(
@@ -33,6 +59,13 @@ class _HomePageState extends State<HomePage> with SeedColorMixin {
             //     });
             //   },
             // ),
+            IconButton(
+              icon: Icon(Icons.more_horiz),
+              onPressed: () async {
+                final result = await AppNavigator.toNamed(AppRouter.notFoundPage, arguments: {"a": "999"});
+                DLog.d("$widget: $result");
+              },
+            ),
           ],
         ),
         body: SingleChildScrollView(
@@ -40,6 +73,7 @@ class _HomePageState extends State<HomePage> with SeedColorMixin {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              Text(AppRouter.routeMap.toString()),
               // 颜色选择器
               SeedColorBox(
                 onColorChanged: (v) {

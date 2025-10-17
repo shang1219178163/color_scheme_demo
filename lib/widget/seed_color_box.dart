@@ -1,4 +1,4 @@
-import 'package:color_scheme_demo/util/ThemeManager.dart';
+import 'package:color_scheme_demo/util/AppThemeService.dart';
 import 'package:flutter/material.dart';
 
 class SeedColorBox extends StatefulWidget {
@@ -42,12 +42,13 @@ class _SeedColorBoxState extends State<SeedColorBox> {
                   ),
                 ),
                 IconButton(
-                  icon: Icon(ThemeManager.instance.brightness == Brightness.light ? Icons.dark_mode : Icons.light_mode),
+                  icon: Icon(
+                      AppThemeService.instance.brightness == Brightness.light ? Icons.dark_mode : Icons.light_mode),
                   onPressed: () {
-                    ThemeManager.instance.brightness =
-                        ThemeManager.instance.brightness == Brightness.light ? Brightness.dark : Brightness.light;
+                    AppThemeService.instance.brightness =
+                        AppThemeService.instance.brightness == Brightness.light ? Brightness.dark : Brightness.light;
                     setState(() {});
-                    widget.onBrightnessChanged?.call(ThemeManager.instance.brightness);
+                    widget.onBrightnessChanged?.call(AppThemeService.instance.brightness);
                   },
                 ),
               ],
@@ -56,10 +57,10 @@ class _SeedColorBoxState extends State<SeedColorBox> {
             Wrap(
               spacing: 8,
               runSpacing: 8,
-              children: ThemeManager.instance.colorOptions.map((color) {
+              children: AppThemeService.instance.colorOptions.map((color) {
                 return GestureDetector(
                   onTap: () {
-                    ThemeManager.instance.seedColor = color;
+                    AppThemeService.instance.seedColor = color;
                     setState(() {});
                     widget.onColorChanged?.call(color);
                   },
@@ -69,7 +70,7 @@ class _SeedColorBoxState extends State<SeedColorBox> {
                     decoration: BoxDecoration(
                       color: color,
                       borderRadius: BorderRadius.circular(8),
-                      border: ThemeManager.instance.seedColor.value == color.value
+                      border: AppThemeService.instance.seedColor.value == color.value
                           ? Border.all(
                               color: Theme.of(context).colorScheme.primary,
                               width: 3,
@@ -82,14 +83,14 @@ class _SeedColorBoxState extends State<SeedColorBox> {
             ),
             const SizedBox(height: 12),
             Text(
-              '当前种子颜色: ${ThemeManager.instance.seedColor.toString()}',
+              '当前种子颜色: ${AppThemeService.instance.seedColor.toString()}',
               style: TextStyle(
                 color: Theme.of(context).colorScheme.onSurfaceVariant,
               ),
             ),
             const SizedBox(height: 8),
             Text(
-              '当前模式: ${ThemeManager.instance.brightness == Brightness.light ? '浅色模式' : '深色模式'}',
+              '当前模式: ${AppThemeService.instance.brightness == Brightness.light ? '浅色模式' : '深色模式'}',
               style: TextStyle(
                 color: Theme.of(context).colorScheme.onSurfaceVariant,
               ),
@@ -103,7 +104,7 @@ class _SeedColorBoxState extends State<SeedColorBox> {
 
 mixin SeedColorMixin<T extends StatefulWidget> on State<T> {
   /// 仅读
-  ColorScheme get colorScheme => ThemeManager.instance.colorScheme;
+  ColorScheme get colorScheme => AppThemeService.instance.colorScheme;
 
   /// 选择主题
   void showSeedColorPicker({bool dismiss = true}) {
