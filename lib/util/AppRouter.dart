@@ -30,6 +30,7 @@ class AppRouter {
   static const String homePageTwo = '/homePageTwo';
   static const String restorationMixinDemo = '/restorationMixinDemo';
   static const String detailPage = '/detailPage';
+  static const String morePage = '/detailPage';
 
   static Map<String, WidgetBuilder> routeMap = Map<String, WidgetBuilder>.fromEntries(
     routes.map((e) => MapEntry<String, WidgetBuilder>(e.name, e.page)),
@@ -57,7 +58,7 @@ class AppRouter {
       page: (context) => RestorationMixinDemo(),
     ),
     AppPage(
-      name: AppRouter.detailPage,
+      name: AppRouter.morePage,
       page: (context) {
         final args = ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>? ?? {};
         return MorePage(
