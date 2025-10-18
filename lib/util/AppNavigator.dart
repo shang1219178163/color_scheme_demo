@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:color_scheme_demo/util/dlog.dart';
 import 'package:flutter/material.dart';
 import 'AppRouter.dart';
 
@@ -5,10 +8,7 @@ export 'dlog.dart';
 
 /// 路由管理
 class AppNavigator {
-  static final AppNavigator _instance = AppNavigator._();
-  AppNavigator._();
-  factory AppNavigator() => _instance;
-  static AppNavigator get instance => _instance;
+  static bool isLog = true;
 
   /// 全局 NavigatorKey
   static final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
@@ -18,23 +18,28 @@ class AppNavigator {
 
   static Map<String, WidgetBuilder> get routeMap => AppRouter.routeMap;
 
-  /// 之前路由页面
-  static RouteSettings? _settingsPre;
+  static final List<PageRoute<Object?>> _pageRoutes = [];
+  List<PageRoute<Object?>> get pageRoutes => _pageRoutes;
+
+  List<String?> get pageRouteNames => pageRoutes.map((e) => e.settings.name).toList();
 
   /// 之前路由页面
-  static RouteSettings? get settingsPre => _settingsPre;
+  static RouteSettings? _routePre;
+
+  /// 之前路由页面
+  static RouteSettings? get routePre => _routePre;
 
   /// 当前路由页面
-  static RouteSettings? _settings;
+  static RouteSettings? _route;
 
   /// 当前路由页面
-  static RouteSettings? get settings => _settings;
+  static RouteSettings? get route => _route;
 
-  static Object? get argumentsPre => settingsPre?.arguments ?? {};
-  static String? get routeNamePre => settingsPre?.name;
+  static Object? get argumentsPre => routePre?.arguments;
+  static String? get routeNamePre => routePre?.name;
 
-  static Object? get arguments => settings?.arguments ?? {};
-  static String? get routeName => settings?.name;
+  static Object? get arguments => route?.arguments;
+  static String? get routeName => route?.name;
 
   /// 匿名跳转（类似 Get.to）
   static Future<T?> to<T>(Widget page, {Object? arguments}) {
@@ -154,6 +159,23 @@ class AppNavigator {
     var back = navigator.popUntil((route) => count++ == times);
     return back;
   }
+
+  Map<String, dynamic> toJson() {
+    final data = <String, dynamic>{};
+    data['pageRoutes'] = pageRoutes.map((e) => e.toString()).toList();
+    data['routeNames'] = pageRouteNames;
+    data['settingsPre'] = routePre.toString();
+    data['routeNamePre'] = routeNamePre;
+    data['routeName'] = routeName;
+    return data;
+  }
+
+  @override
+  String toString() {
+    var encoder = const JsonEncoder.withIndent('  ');
+    final descption = encoder.convert(toJson());
+    return "$runtimeType: $descption";
+  }
 }
 
 /// 导航监听
@@ -161,24 +183,53 @@ class AppNavigatorObserver extends NavigatorObserver {
   @override
   void didPush(Route route, Route? previousRoute) {
     super.didPush(route, previousRoute);
+    if (previousRoute is PageRoute) {
+      AppNavigator._routePre = previousRoute.settings;
+    }
+    if (route is PageRoute) {
+      AppNavigator._route = route.settings;
+      AppNavigator._pageRoutes.add(route);
+    }
 
-    if (route is! PopupRoute) {
-      AppNavigator._settingsPre = previousRoute?.settings;
-      AppNavigator._settings = route.settings;
+    if (AppNavigator.isLog) {
+      DLog.d([route.settings.name, previousRoute?.settings.name, AppNavigator()].asMap());
     }
   }
 
   @override
   void didPop(Route route, Route? previousRoute) {
     super.didPop(route, previousRoute);
-    AppNavigator._settingsPre = previousRoute?.settings;
-    AppNavigator._settings = route.settings;
+    // DLog.d(["didPop", route.settings, previousRoute?.settings].asMap());
+    if (previousRoute is PageRoute) {
+      AppNavigator._route = previousRoute.settings;
+    }
+
+    if (route is PageRoute) {
+      AppNavigator._routePre = route.settings;
+      AppNavigator._pageRoutes.remove(route);
+    }
+
+    if (AppNavigator.isLog) {
+      DLog.d([route.settings.name, previousRoute?.settings.name, AppNavigator()].asMap());
+    }
   }
 
   @override
   void didReplace({Route? newRoute, Route? oldRoute}) {
     super.didReplace(newRoute: newRoute, oldRoute: oldRoute);
-    AppNavigator._settingsPre = oldRoute?.settings;
-    AppNavigator._settings = newRoute?.settings;
+    // DLog.d(["didReplace", newRoute?.settings, oldRoute?.settings].asMap());
+    if (oldRoute is PageRoute) {
+      AppNavigator._routePre = oldRoute.settings;
+      AppNavigator._pageRoutes.remove(oldRoute);
+    }
+
+    if (newRoute is PageRoute) {
+      AppNavigator._route = newRoute.settings;
+      AppNavigator._pageRoutes.add(newRoute);
+    }
+
+    if (AppNavigator.isLog) {
+      DLog.d([newRoute?.settings.name, oldRoute?.settings.name, AppNavigator()].asMap());
+    }
   }
 }

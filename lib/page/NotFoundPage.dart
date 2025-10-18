@@ -6,10 +6,11 @@
 //  Copyright © 5/20/21 shang. All rights reserved.
 //
 
+import 'package:color_scheme_demo/util/AppRouter.dart';
+import 'package:color_scheme_demo/util/sheet_util.dart';
 import 'package:flutter/material.dart';
 
 import '../util/AppNavigator.dart';
-import '../util/dlog.dart';
 
 class NotFoundPage extends StatefulWidget {
   const NotFoundPage({
@@ -28,15 +29,20 @@ class _NotFoundPageState extends State<NotFoundPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("404"),
+    return PopScope(
+      onPopInvokedWithResult: (bool didPop, result) {
+        // DLog.d(AppNavigator());
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text("404"),
+        ),
+        body: buildBody(),
       ),
-      body: buildBody(),
     );
   }
 
-  buildBody() {
+  Widget buildBody() {
     return Padding(
       padding: const EdgeInsets.only(top: 200.0),
       child: Center(
@@ -62,7 +68,44 @@ class _NotFoundPageState extends State<NotFoundPage> {
               },
               child: Text('带参返回'),
             ),
+            TextButton(
+              onPressed: () {
+                onShowSheet(
+                  text: '返回',
+                  onTap: () {
+                    AppNavigator.back();
+                    DLog.d(AppNavigator());
+                  },
+                );
+              },
+              child: Text('showSheet'),
+            ),
           ],
+        ),
+      ),
+    );
+  }
+
+  Future onShowSheet({
+    required String text,
+    required VoidCallback onTap,
+  }) {
+    return SheetUtil.showCustom(
+      context: context,
+      child: Container(
+        width: double.infinity,
+        height: 400,
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+          color: Colors.transparent,
+          border: Border.all(color: Colors.blue),
+          borderRadius: BorderRadius.all(Radius.circular(0)),
+        ),
+        child: Center(
+          child: GestureDetector(
+            onTap: onTap,
+            child: Text(text),
+          ),
         ),
       ),
     );
