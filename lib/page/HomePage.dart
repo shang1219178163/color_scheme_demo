@@ -61,7 +61,7 @@ class _HomePageState extends State<HomePage> with SeedColorMixin {
             IconButton(
               icon: Icon(Icons.more_horiz),
               onPressed: () async {
-                final result = await AppNavigator.toNamed(AppRouter.notFoundPage, arguments: {"a": "999"});
+                final result = await AppNavigator.toNamed(AppRouter.detailPage, arguments: {"id": "111", "a": "999"});
                 DLog.d("$widget: $result");
               },
             ),
@@ -72,7 +72,6 @@ class _HomePageState extends State<HomePage> with SeedColorMixin {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(AppRouter.routeMap.toString()),
               // 颜色选择器
               SeedColorBox(
                 onColorChanged: (v) {

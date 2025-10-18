@@ -59,50 +59,7 @@ class _NotFoundPageState extends State<NotFoundPage> {
               },
               child: Text('立即捉它回家!'),
             ),
-            TextButton(
-              onPressed: () {
-                AppNavigator.back({"$this": args});
-              },
-              child: Text('带参返回'),
-            ),
-            TextButton(
-              onPressed: () {
-                onShowSheet(
-                  text: '返回',
-                  onTap: () {
-                    AppNavigator.back();
-                    DLog.d(AppNavigator());
-                  },
-                );
-              },
-              child: Text('showSheet'),
-            ),
           ],
-        ),
-      ),
-    );
-  }
-
-  Future onShowSheet({
-    required String text,
-    required VoidCallback onTap,
-  }) {
-    return SheetUtil.showCustom(
-      context: context,
-      child: Container(
-        width: double.infinity,
-        height: 400,
-        alignment: Alignment.center,
-        decoration: BoxDecoration(
-          color: Colors.transparent,
-          border: Border.all(color: Colors.blue),
-          borderRadius: BorderRadius.all(Radius.circular(0)),
-        ),
-        child: Center(
-          child: GestureDetector(
-            onTap: onTap,
-            child: Text(text),
-          ),
         ),
       ),
     );

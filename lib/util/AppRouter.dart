@@ -1,3 +1,4 @@
+import 'package:color_scheme_demo/page/MorePage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:color_scheme_demo/page/RestorationMixinDemo.dart';
 import 'package:color_scheme_demo/page/HomePage.dart';
@@ -28,6 +29,7 @@ class AppRouter {
   static const String homePageOne = '/homePageOne';
   static const String homePageTwo = '/homePageTwo';
   static const String restorationMixinDemo = '/restorationMixinDemo';
+  static const String detailPage = '/detailPage';
 
   static Map<String, WidgetBuilder> routeMap = Map<String, WidgetBuilder>.fromEntries(
     routes.map((e) => MapEntry<String, WidgetBuilder>(e.name, e.page)),
@@ -53,6 +55,16 @@ class AppRouter {
     AppPage(
       name: AppRouter.restorationMixinDemo,
       page: (context) => RestorationMixinDemo(),
+    ),
+    AppPage(
+      name: AppRouter.detailPage,
+      page: (context) {
+        final args = ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>? ?? {};
+        return MorePage(
+          id: args['id'],
+          arguments: args,
+        );
+      },
     ),
   ];
 }

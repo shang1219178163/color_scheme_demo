@@ -51,7 +51,7 @@ class _RestorationMixinDemoState extends State<RestorationMixinDemo> with Restor
 
   static Route<void> _detailBuilder(BuildContext context, Object? args) {
     return MaterialPageRoute<void>(
-      builder: (_) => const DetailPage(),
+      builder: (_) => const RestorationDetailPage(),
       settings: const RouteSettings(name: 'detail_page'),
     );
   }
@@ -124,14 +124,14 @@ class _RestorationMixinDemoState extends State<RestorationMixinDemo> with Restor
 }
 
 /// 详情页（独立状态）
-class DetailPage extends StatefulWidget {
-  const DetailPage({super.key});
+class RestorationDetailPage extends StatefulWidget {
+  const RestorationDetailPage({super.key});
 
   @override
-  State<DetailPage> createState() => _DetailPageState();
+  State<RestorationDetailPage> createState() => _RestorationDetailPageState();
 }
 
-class _DetailPageState extends State<DetailPage> with RestorationMixin {
+class _RestorationDetailPageState extends State<RestorationDetailPage> with RestorationMixin {
   final _count = RestorableInt(100);
   final _noteController = RestorableTextEditingController();
 

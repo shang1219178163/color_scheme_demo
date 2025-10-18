@@ -8,7 +8,7 @@ export 'dlog.dart';
 
 /// 路由管理
 class AppNavigator {
-  static bool isLog = true;
+  static bool isLog = false;
 
   /// 全局 NavigatorKey
   static final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
