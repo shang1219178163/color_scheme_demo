@@ -1,11 +1,11 @@
-import 'dart:math';
-import 'package:color_scheme_demo/page/RestorationMixinDemo.dart';
 import 'package:flutter/cupertino.dart';
-
+import 'package:color_scheme_demo/page/RestorationMixinDemo.dart';
 import 'package:color_scheme_demo/page/HomePage.dart';
 import 'package:color_scheme_demo/page/HomePageOne.dart';
 import 'package:color_scheme_demo/page/HomePageTwo.dart';
 import 'package:color_scheme_demo/page/NotFoundPage.dart';
+
+export 'AppNavigator.dart';
 
 /// 路由页面
 class AppPage {

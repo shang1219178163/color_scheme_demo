@@ -5,12 +5,9 @@
 //  Created by shang on 5/20/21 5:31 PM.
 //  Copyright © 5/20/21 shang. All rights reserved.
 //
-
-import 'package:color_scheme_demo/util/AppRouter.dart';
-import 'package:color_scheme_demo/util/sheet_util.dart';
 import 'package:flutter/material.dart';
-
-import '../util/AppNavigator.dart';
+import 'package:color_scheme_demo/util/AppRouter.dart';
+import 'package:color_scheme_demo/util/SheetUtil.dart';
 
 class NotFoundPage extends StatefulWidget {
   const NotFoundPage({
