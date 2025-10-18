@@ -19,9 +19,9 @@ class AppNavigator {
   static Map<String, WidgetBuilder> get routeMap => AppRouter.routeMap;
 
   static final List<PageRoute<Object?>> _pageRoutes = [];
-  List<PageRoute<Object?>> get pageRoutes => _pageRoutes;
+  static List<PageRoute<Object?>> get pageRoutes => _pageRoutes;
 
-  List<String?> get pageRouteNames => pageRoutes.map((e) => e.settings.name).toList();
+  static List<String?> get pageRouteNames => pageRoutes.map((e) => e.settings.name).toList();
 
   /// 之前路由页面
   static RouteSettings? _routePre;
@@ -73,19 +73,18 @@ class AppNavigator {
     );
   }
 
-  void until(RoutePredicate predicate) {
+  static void until(RoutePredicate predicate) {
     return navigator.popUntil(predicate);
   }
 
-  Future<T?>? offUntil<T>(Route<T> page, RoutePredicate predicate, {int? id}) {
+  static Future<T?>? offUntil<T>(Route<T> page, RoutePredicate predicate) {
     return navigator.pushAndRemoveUntil<T>(page, predicate);
   }
 
-  /// **Navigation.pushNamedAndRemoveUntil()** shortcut.<br><br>
-  Future<T?>? offNamedUntil<T>(
+  /// **Navigation.pushNamedAndRemoveUntil()** shortcut.
+  static Future<T?>? offNamedUntil<T>(
     String page,
     RoutePredicate predicate, {
-    int? id,
     dynamic arguments,
     Map<String, String>? parameters,
   }) {
@@ -101,8 +100,8 @@ class AppNavigator {
     );
   }
 
-  /// **Navigation.popAndPushNamed()** shortcut.<br><br>
-  Future<T?>? offAndToNamed<T>(
+  /// **Navigation.popAndPushNamed()** shortcut.
+  static Future<T?>? offAndToNamed<T>(
     String page, {
     dynamic arguments,
     dynamic result,
@@ -119,8 +118,8 @@ class AppNavigator {
     );
   }
 
-  /// **Navigation.removeRoute()** shortcut.<br><br>
-  void removeRoute(Route<dynamic> route) {
+  /// **Navigation.removeRoute()** shortcut.
+  static void removeRoute(Route<dynamic> route) {
     return navigator.removeRoute(route);
   }
 
@@ -150,8 +149,8 @@ class AppNavigator {
     return navigator.pop(result);
   }
 
-  /// **Navigation.popUntil()** (with predicate) shortcut .<br><br>
-  void close(int times, [int? id]) {
+  /// **Navigation.popUntil()** (with predicate) shortcut .
+  static void close(int times) {
     if (times < 1) {
       times = 1;
     }
