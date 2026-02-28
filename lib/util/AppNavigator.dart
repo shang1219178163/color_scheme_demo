@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:color_scheme_demo/page/UnknownPage.dart';
 import 'package:color_scheme_demo/util/dlog.dart';
 import 'package:flutter/material.dart';
 import 'AppRouter.dart';
@@ -15,6 +16,9 @@ class AppNavigator {
 
   /// 当前 Navigator
   static NavigatorState get navigator => navigatorKey.currentState!;
+
+  /// 未知页面
+  static WidgetBuilder unknownPageBuilder = (context) => const UnknownPage();
 
   static Map<String, WidgetBuilder> get routeMap => AppRouter.routeMap;
 
@@ -41,6 +45,29 @@ class AppNavigator {
   static Object? get arguments => route?.arguments;
   static String? get routeName => route?.name;
 
+  /// 监听列表
+  static final List<void Function({Route? from, Route? to})> _listeners = [];
+
+  // 添加监听
+  static void addListener(void Function({Route? from, Route? to}) cb) {
+    if (_listeners.contains(cb)) {
+      return;
+    }
+    _listeners.add(cb);
+  }
+
+  // 移除监听
+  static void removeListener(void Function({Route? from, Route? to}) cb) {
+    _listeners.remove(cb);
+  }
+
+  /// 通知所有监听器
+  static void notifyListeners({required Route? from, required Route? to}) {
+    for (var ltr in _listeners) {
+      ltr(from: from, to: to);
+    }
+  }
+
   /// 匿名跳转（类似 Get.to）
   static Future<T?> to<T>(Widget page, {Object? arguments}) {
     return navigator.push<T>(
@@ -50,8 +77,7 @@ class AppNavigator {
 
   /// 命名跳转（类似 Get.toNamed）
   static Future<T?>? toNamed<T>(String routeName, {Object? arguments}) {
-    final builder = routeMap[routeName];
-    if (builder == null) throw Exception('Route "$routeName" not found.');
+    final builder = routeMap[routeName] ?? unknownPageBuilder;
     return navigator.push<T>(
       MaterialPageRoute(builder: builder, settings: RouteSettings(name: routeName, arguments: arguments)),
     );
@@ -66,8 +92,7 @@ class AppNavigator {
 
   /// 命名替换（类似 Get.offNamed）
   static Future<T?>? offNamed<T>(String routeName, {Object? arguments}) {
-    final builder = routeMap[routeName];
-    if (builder == null) throw Exception('Route "$routeName" not found.');
+    final builder = routeMap[routeName] ?? unknownPageBuilder;
     return navigator.pushReplacement<T, T>(
       MaterialPageRoute(builder: builder, settings: RouteSettings(name: routeName, arguments: arguments)),
     );
@@ -133,8 +158,8 @@ class AppNavigator {
 
   /// 命名清栈跳转（类似 Get.offAllNamed）
   static Future<T?>? offAllNamed<T>(String routeName, {Object? arguments}) {
-    final builder = routeMap[routeName];
-    if (builder == null) throw Exception('Route "$routeName" not found.');
+    final builder = routeMap[routeName] ?? unknownPageBuilder;
+
     return navigator.pushAndRemoveUntil<T>(
       MaterialPageRoute(builder: builder, settings: RouteSettings(name: routeName, arguments: arguments)),
       (route) => false,
@@ -188,6 +213,7 @@ class AppNavigatorObserver extends NavigatorObserver {
     if (route is PageRoute) {
       AppNavigator._route = route.settings;
       AppNavigator._pageRoutes.add(route);
+      AppNavigator.notifyListeners(from: previousRoute, to: route);
     }
 
     if (AppNavigator.isLog) {
@@ -206,6 +232,7 @@ class AppNavigatorObserver extends NavigatorObserver {
     if (route is PageRoute) {
       AppNavigator._routePre = route.settings;
       AppNavigator._pageRoutes.remove(route);
+      AppNavigator.notifyListeners(from: previousRoute, to: route);
     }
 
     if (AppNavigator.isLog) {
@@ -225,6 +252,7 @@ class AppNavigatorObserver extends NavigatorObserver {
     if (newRoute is PageRoute) {
       AppNavigator._route = newRoute.settings;
       AppNavigator._pageRoutes.add(newRoute);
+      AppNavigator.notifyListeners(from: oldRoute, to: newRoute);
     }
 
     if (AppNavigator.isLog) {

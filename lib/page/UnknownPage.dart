@@ -9,8 +9,8 @@ import 'package:flutter/material.dart';
 import 'package:color_scheme_demo/util/AppRouter.dart';
 import 'package:color_scheme_demo/util/SheetUtil.dart';
 
-class NotFoundPage extends StatefulWidget {
-  const NotFoundPage({
+class UnknownPage extends StatefulWidget {
+  const UnknownPage({
     super.key,
     this.arguments,
   });
@@ -18,10 +18,10 @@ class NotFoundPage extends StatefulWidget {
   final Map<String, dynamic>? arguments;
 
   @override
-  State<NotFoundPage> createState() => _NotFoundPageState();
+  State<UnknownPage> createState() => _UnknownPageState();
 }
 
-class _NotFoundPageState extends State<NotFoundPage> {
+class _UnknownPageState extends State<UnknownPage> {
   late final args = ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>? ?? {};
 
   @override

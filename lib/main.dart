@@ -20,6 +20,12 @@ class MyApp extends StatelessWidget {
       navigatorObservers: [AppNavigatorObserver()],
       initialRoute: AppRouter.initial,
       routes: AppRouter.routeMap,
+      onUnknownRoute: (RouteSettings settings) {
+        return MaterialPageRoute<void>(
+          settings: settings,
+          builder: AppNavigator.unknownPageBuilder,
+        );
+      },
     );
   }
 }

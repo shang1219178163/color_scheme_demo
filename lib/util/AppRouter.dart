@@ -4,7 +4,9 @@ import 'package:color_scheme_demo/page/RestorationMixinDemo.dart';
 import 'package:color_scheme_demo/page/HomePage.dart';
 import 'package:color_scheme_demo/page/HomePageOne.dart';
 import 'package:color_scheme_demo/page/HomePageTwo.dart';
-import 'package:color_scheme_demo/page/NotFoundPage.dart';
+import 'package:color_scheme_demo/page/UnknownPage.dart';
+
+import '../page/TestPage.dart';
 
 export 'AppNavigator.dart';
 
@@ -30,7 +32,8 @@ class AppRouter {
   static const String homePageTwo = '/homePageTwo';
   static const String restorationMixinDemo = '/restorationMixinDemo';
   static const String detailPage = '/detailPage';
-  static const String morePage = '/detailPage';
+  static const String morePage = '/morePage';
+  static const String testPage = '/testPage';
 
   static Map<String, WidgetBuilder> routeMap = Map<String, WidgetBuilder>.fromEntries(
     routes.map((e) => MapEntry<String, WidgetBuilder>(e.name, e.page)),
@@ -39,7 +42,7 @@ class AppRouter {
   static final List<AppPage> routes = [
     AppPage(
       name: AppRouter.notFoundPage,
-      page: (context) => NotFoundPage(),
+      page: (context) => UnknownPage(),
     ),
     AppPage(
       name: AppRouter.homePage,
@@ -60,12 +63,16 @@ class AppRouter {
     AppPage(
       name: AppRouter.morePage,
       page: (context) {
-        final args = ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>? ?? {};
+        final args = ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>? ?? <String, dynamic>{};
         return MorePage(
           id: args['id'],
           arguments: args,
         );
       },
+    ),
+    AppPage(
+      name: AppRouter.testPage,
+      page: (context) => TestPage(),
     ),
   ];
 }

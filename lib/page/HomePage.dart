@@ -65,6 +65,13 @@ class _HomePageState extends State<HomePage> with SeedColorMixin {
                 DLog.d("$widget: $result");
               },
             ),
+
+            IconButton(
+              icon: Icon(Icons.color_lens),
+              onPressed: () async {
+                AppNavigator.toNamed(AppRouter.testPage);
+              },
+            ),
           ],
         ),
         body: SingleChildScrollView(
