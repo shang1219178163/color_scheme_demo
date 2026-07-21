@@ -1,4 +1,5 @@
 import 'package:color_scheme_demo/util/AppRouter.dart';
+import 'package:color_scheme_demo/util/page_capture.dart';
 import 'package:flutter/material.dart';
 
 import '../widget/seed_color_box.dart';
@@ -11,6 +12,27 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> with SeedColorMixin {
+  final GlobalKey _pageCaptureKey = GlobalKey();
+  bool _isCapturing = false;
+
+  Future<void> capturePage() async {
+    if (_isCapturing) {
+      return;
+    }
+    setState(() {
+      _isCapturing = true;
+    });
+    try {
+      await captureAndDownloadWidget(captureKey: _pageCaptureKey, context: context);
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isCapturing = false;
+        });
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Theme(
@@ -30,23 +52,26 @@ class _HomePageState extends State<HomePage> with SeedColorMixin {
             title: const Text('ColorScheme 配色方案生成器'),
             elevation: 4,
             actions: [
-              // IconButton(
-              //   icon: Icon(_brightness == Brightness.light ? Icons.dark_mode : Icons.light_mode),
-              //   onPressed: () {
-              //     setState(() {
-              //       _brightness = _brightness == Brightness.light ? Brightness.dark : Brightness.light;
-              //     });
-              //   },
-              // ),
               IconButton(
-                icon: Icon(Icons.more_horiz),
+                tooltip: '截取整页并下载',
+                onPressed: _isCapturing ? null : capturePage,
+                icon: _isCapturing
+                    ? const SizedBox(
+                        width: 20,
+                        height: 20,
+                        child: CircularProgressIndicator(strokeWidth: 2),
+                      )
+                    : const Icon(Icons.crop),
+              ),
+              IconButton(
+                icon: const Icon(Icons.more_horiz),
                 onPressed: () async {
                   final result = await AppNavigator.toNamed(AppRouter.morePage, arguments: {"id": "111", "a": "999"});
                   DLog.d("$widget: $result");
                 },
               ),
               IconButton(
-                icon: Icon(Icons.color_lens),
+                icon: const Icon(Icons.color_lens),
                 onPressed: () async {
                   AppNavigator.toNamed(AppRouter.testPage);
                 },
@@ -55,27 +80,30 @@ class _HomePageState extends State<HomePage> with SeedColorMixin {
           ),
           body: SingleChildScrollView(
             padding: const EdgeInsets.all(16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // 颜色选择器
-                SeedColorBox(
-                  onColorChanged: (v) {
-                    setState(() {});
-                    debugPrint("onColorChanged $v");
-                  },
-                  onBrightnessChanged: (v) {
-                    setState(() {});
-                    debugPrint("onBrightnessChanged $v");
-                  },
+            child: RepaintBoundary(
+              key: _pageCaptureKey,
+              child: ColoredBox(
+                color: colorScheme.surface,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SeedColorBox(
+                      onColorChanged: (v) {
+                        setState(() {});
+                        debugPrint("onColorChanged $v");
+                      },
+                      onBrightnessChanged: (v) {
+                        setState(() {});
+                        debugPrint("onBrightnessChanged $v");
+                      },
+                    ),
+                    const SizedBox(height: 24),
+                    buildColorSchemeDisplay(colorScheme),
+                    const SizedBox(height: 24),
+                    buildComponentExamples(colorScheme),
+                  ],
                 ),
-                const SizedBox(height: 24),
-                // 配色方案展示
-                buildColorSchemeDisplay(colorScheme),
-                const SizedBox(height: 24),
-                // UI 组件示例
-                buildComponentExamples(colorScheme),
-              ],
+              ),
             ),
           ),
         ),
@@ -265,10 +293,22 @@ class _HomePageState extends State<HomePage> with SeedColorMixin {
                 runSpacing: 12,
                 crossAxisAlignment: WrapCrossAlignment.center,
                 children: [
-                  FloatingActionButton.small(onPressed: () {}, child: const Icon(Icons.add)),
-                  FloatingActionButton(onPressed: () {}, child: const Icon(Icons.add)),
+                  FloatingActionButton.small(
+                    heroTag: 'fab_primary_container_small',
+                    onPressed: () {},
+                    child: const Icon(Icons.add),
+                  ),
+                  FloatingActionButton(
+                    heroTag: 'fab_primary_container',
+                    onPressed: () {},
+                    child: const Icon(Icons.add),
+                  ),
                   FloatingActionButton.extended(
-                      onPressed: () {}, icon: const Icon(Icons.add), label: const Text('FAB')),
+                    heroTag: 'fab_primary_container_extended',
+                    onPressed: () {},
+                    icon: const Icon(Icons.add),
+                    label: const Text('FAB'),
+                  ),
                 ],
               ),
             ),
@@ -278,6 +318,7 @@ class _HomePageState extends State<HomePage> with SeedColorMixin {
               subtitle: 'FAB 图标/文字（随 primaryContainer）',
               colorScheme: colorScheme,
               child: FloatingActionButton.extended(
+                heroTag: 'fab_on_primary_container',
                 onPressed: () {},
                 icon: const Icon(Icons.palette),
                 label: const Text('onPrimaryContainer'),
@@ -683,7 +724,6 @@ class _HomePageState extends State<HomePage> with SeedColorMixin {
     required Widget child,
   }) {
     final isDark = colorScheme.brightness == Brightness.dark;
-    final swatchBorder = resolveSwatchBorder(swatchColor, colorScheme);
     return Padding(
       padding: const EdgeInsets.only(bottom: 20),
       child: Column(
@@ -697,7 +737,7 @@ class _HomePageState extends State<HomePage> with SeedColorMixin {
                 decoration: BoxDecoration(
                   color: swatchColor,
                   borderRadius: BorderRadius.circular(4),
-                  // border: Border.all(color: swatchBorder),
+                  border: Border.all(color: colorScheme.outlineVariant),
                 ),
               ),
               const SizedBox(width: 8),
@@ -733,15 +773,5 @@ class _HomePageState extends State<HomePage> with SeedColorMixin {
         ],
       ),
     );
-  }
-
-  /// 色块边框：避免与背景同亮度时看不见
-  Color resolveSwatchBorder(Color swatchColor, ColorScheme colorScheme) {
-    final swatchBright = ThemeData.estimateBrightnessForColor(swatchColor);
-    final surfaceBright = colorScheme.brightness;
-    if (swatchBright == surfaceBright) {
-      return colorScheme.outline;
-    }
-    return colorScheme.outlineVariant;
   }
 }
