@@ -15,31 +15,7 @@ class _HomePageState extends State<HomePage> with SeedColorMixin {
   Widget build(BuildContext context) {
     return Theme(
       data: ThemeData(
-        // useMaterial3: false,
         colorScheme: colorScheme,
-        // buttonTheme: ButtonThemeData(
-        //   textTheme: ButtonTextTheme.primary,
-        //   splashColor: seedColor,
-        //   hoverColor: seedColor,
-        //   buttonColor: seedColor,
-        //   focusColor: seedColor,
-        // ),
-        // textTheme: const TextTheme(
-        //   displayLarge: TextStyle(color: Colors.black, fontSize: 96.0, fontWeight: FontWeight.w300),
-        //   displayMedium: TextStyle(color: Colors.black, fontSize: 60.0, fontWeight: FontWeight.w300),
-        //   displaySmall: TextStyle(color: Colors.black, fontSize: 48.0, fontWeight: FontWeight.w400),
-        //   headlineMedium: TextStyle(color: Colors.black, fontSize: 34.0, fontWeight: FontWeight.w400),
-        //   headlineSmall: TextStyle(color: Colors.black, fontSize: 24.0, fontWeight: FontWeight.w400),
-        //   titleLarge: TextStyle(color: Colors.black, fontSize: 20.0, fontWeight: FontWeight.w500),
-        //   titleMedium: TextStyle(color: Colors.black, fontSize: 16.0, fontWeight: FontWeight.w400),
-        //   titleSmall: TextStyle(color: Colors.black, fontSize: 14.0, fontWeight: FontWeight.w500),
-        //   bodyLarge: TextStyle(color: Colors.black, fontSize: 16.0, fontWeight: FontWeight.w400),
-        //   bodyMedium: TextStyle(color: Colors.black, fontSize: 14.0, fontWeight: FontWeight.w400),
-        //   bodySmall: TextStyle(color: Colors.black, fontSize: 12.0, fontWeight: FontWeight.w400),
-        //   labelLarge: TextStyle(color: Colors.red, fontSize: 14.0, fontWeight: FontWeight.w500),
-        //   labelMedium: TextStyle(color: Colors.yellow, fontSize: 14.0, fontWeight: FontWeight.w500),
-        //   labelSmall: TextStyle(color: Colors.green, fontSize: 10.0, fontWeight: FontWeight.w400),
-        // ),
       ),
       child: SelectionArea(
         child: Scaffold(
@@ -298,9 +274,9 @@ class _HomePageState extends State<HomePage> with SeedColorMixin {
               ),
             ),
             buildSchemeSection(
-              title: 'secondary / secondaryContainer',
-              swatchColor: colorScheme.secondaryContainer,
-              subtitle: 'ChoiceChip、FilterChip、SegmentedButton、FilledButton.tonal、导航指示器（M3 默认 secondaryContainer）',
+              title: 'secondary',
+              swatchColor: colorScheme.secondary,
+              subtitle: 'ColorScheme.secondary；M3 组件默认多用 secondaryContainer',
               colorScheme: colorScheme,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -310,9 +286,6 @@ class _HomePageState extends State<HomePage> with SeedColorMixin {
                     runSpacing: 8,
                     crossAxisAlignment: WrapCrossAlignment.center,
                     children: [
-                      FilledButton.tonal(onPressed: () {}, child: const Text('FilledButton.tonal')),
-                      FilledButton.tonalIcon(onPressed: () {}, icon: const Icon(Icons.edit), label: const Text('Tonal.icon')),
-                      IconButton.filledTonal(onPressed: () {}, icon: const Icon(Icons.favorite)),
                       ChoiceChip(label: const Text('ChoiceChip'), selected: true, onSelected: (_) {}),
                       ChoiceChip(label: const Text('未选中'), selected: false, onSelected: (_) {}),
                       FilterChip(label: const Text('FilterChip'), selected: true, onSelected: (_) {}),
@@ -357,9 +330,47 @@ class _HomePageState extends State<HomePage> with SeedColorMixin {
               ),
             ),
             buildSchemeSection(
+              title: 'onSecondary',
+              swatchColor: colorScheme.onSecondary,
+              subtitle: 'secondary 选中态上的文字/图标（Chip、SegmentedButton）',
+              colorScheme: colorScheme,
+              child: Wrap(
+                spacing: 8,
+                runSpacing: 8,
+                children: [
+                  ChoiceChip(label: const Text('onSecondary 文字'), selected: true, onSelected: (_) {}),
+                  FilterChip(label: const Text('选中态前景'), selected: true, onSelected: (_) {}),
+                  SegmentedButton<int>(
+                    segments: const [
+                      ButtonSegment(value: 0, label: Text('A')),
+                      ButtonSegment(value: 1, label: Text('B')),
+                    ],
+                    selected: const {0},
+                    onSelectionChanged: (_) {},
+                  ),
+                ],
+              ),
+            ),
+            buildSchemeSection(
+              title: 'secondaryContainer',
+              swatchColor: colorScheme.secondaryContainer,
+              subtitle: 'FilledButton.tonal、IconButton.filledTonal（M3 默认 token）',
+              colorScheme: colorScheme,
+              child: Wrap(
+                spacing: 8,
+                runSpacing: 8,
+                crossAxisAlignment: WrapCrossAlignment.center,
+                children: [
+                  FilledButton.tonal(onPressed: () {}, child: const Text('FilledButton.tonal')),
+                  FilledButton.tonalIcon(onPressed: () {}, icon: const Icon(Icons.edit), label: const Text('Tonal.icon')),
+                  IconButton.filledTonal(onPressed: () {}, icon: const Icon(Icons.favorite)),
+                ],
+              ),
+            ),
+            buildSchemeSection(
               title: 'onSecondaryContainer',
               swatchColor: colorScheme.onSecondaryContainer,
-              subtitle: 'tonal / Chip 选中态前景（见上方组件）',
+              subtitle: 'tonal 按钮前景色',
               colorScheme: colorScheme,
               child: FilledButton.tonalIcon(
                 onPressed: () {},
@@ -645,11 +656,8 @@ class _HomePageState extends State<HomePage> with SeedColorMixin {
 
   /// ColorScheme 属性分组区块
   Widget buildSchemeSection({
-    required String title,
-    required String subtitle,
-    required Color swatchColor,
-    required ColorScheme colorScheme,
-    required Widget child,
+    required String title, required String subtitle, required Color swatchColor,
+    required ColorScheme colorScheme, required Widget child,
   }) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 20),
