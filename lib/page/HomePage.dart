@@ -16,6 +16,13 @@ class _HomePageState extends State<HomePage> with SeedColorMixin {
     return Theme(
       data: ThemeData(
         colorScheme: colorScheme,
+        brightness: colorScheme.brightness,
+        useMaterial3: true,
+        scaffoldBackgroundColor: colorScheme.surface,
+        canvasColor: colorScheme.surface,
+        cardColor: colorScheme.surfaceContainerLow,
+        dividerColor: colorScheme.outlineVariant,
+        applyElevationOverlayColor: colorScheme.brightness == Brightness.dark,
       ),
       child: SelectionArea(
         child: Scaffold(
@@ -193,7 +200,6 @@ class _HomePageState extends State<HomePage> with SeedColorMixin {
           children: [
             Text(
               'UI 组件示例（颜色走主题 ColorScheme）',
-              style: Theme.of(context).textTheme.titleMedium,
             ),
             const SizedBox(height: 16),
             buildSchemeSection(
@@ -210,11 +216,13 @@ class _HomePageState extends State<HomePage> with SeedColorMixin {
                     crossAxisAlignment: WrapCrossAlignment.center,
                     children: [
                       FilledButton(onPressed: () {}, child: const Text('FilledButton')),
-                      FilledButton.icon(onPressed: () {}, icon: const Icon(Icons.check), label: const Text('Filled.icon')),
+                      FilledButton.icon(
+                          onPressed: () {}, icon: const Icon(Icons.check), label: const Text('Filled.icon')),
                       TextButton(onPressed: () {}, child: const Text('TextButton')),
                       TextButton.icon(onPressed: () {}, icon: const Icon(Icons.info), label: const Text('Text.icon')),
                       OutlinedButton(onPressed: () {}, child: const Text('OutlinedButton')),
-                      OutlinedButton.icon(onPressed: () {}, icon: const Icon(Icons.link), label: const Text('Outlined.icon')),
+                      OutlinedButton.icon(
+                          onPressed: () {}, icon: const Icon(Icons.link), label: const Text('Outlined.icon')),
                       IconButton.filled(onPressed: () {}, icon: const Icon(Icons.favorite)),
                     ],
                   ),
@@ -229,7 +237,8 @@ class _HomePageState extends State<HomePage> with SeedColorMixin {
                       Radio(value: 1, groupValue: 1, onChanged: (_) {}),
                       SizedBox(width: 120, child: Slider(value: 0.6, onChanged: (_) {})),
                       const SizedBox(width: 100, child: LinearProgressIndicator(value: 0.7)),
-                      const SizedBox(width: 28, height: 28, child: CircularProgressIndicator(value: 0.7, strokeWidth: 3)),
+                      const SizedBox(
+                          width: 28, height: 28, child: CircularProgressIndicator(value: 0.7, strokeWidth: 3)),
                     ],
                   ),
                 ],
@@ -258,7 +267,8 @@ class _HomePageState extends State<HomePage> with SeedColorMixin {
                 children: [
                   FloatingActionButton.small(onPressed: () {}, child: const Icon(Icons.add)),
                   FloatingActionButton(onPressed: () {}, child: const Icon(Icons.add)),
-                  FloatingActionButton.extended(onPressed: () {}, icon: const Icon(Icons.add), label: const Text('FAB')),
+                  FloatingActionButton.extended(
+                      onPressed: () {}, icon: const Icon(Icons.add), label: const Text('FAB')),
                 ],
               ),
             ),
@@ -289,7 +299,8 @@ class _HomePageState extends State<HomePage> with SeedColorMixin {
                       ChoiceChip(label: const Text('ChoiceChip'), selected: true, onSelected: (_) {}),
                       ChoiceChip(label: const Text('未选中'), selected: false, onSelected: (_) {}),
                       FilterChip(label: const Text('FilterChip'), selected: true, onSelected: (_) {}),
-                      ActionChip(avatar: const Icon(Icons.bolt, size: 18), label: const Text('ActionChip'), onPressed: () {}),
+                      ActionChip(
+                          avatar: const Icon(Icons.bolt, size: 18), label: const Text('ActionChip'), onPressed: () {}),
                     ],
                   ),
                   const SizedBox(height: 12),
@@ -369,7 +380,8 @@ class _HomePageState extends State<HomePage> with SeedColorMixin {
                 crossAxisAlignment: WrapCrossAlignment.center,
                 children: [
                   FilledButton.tonal(onPressed: () {}, child: const Text('FilledButton.tonal')),
-                  FilledButton.tonalIcon(onPressed: () {}, icon: const Icon(Icons.edit), label: const Text('Tonal.icon')),
+                  FilledButton.tonalIcon(
+                      onPressed: () {}, icon: const Icon(Icons.edit), label: const Text('Tonal.icon')),
                   IconButton.filledTonal(onPressed: () {}, icon: const Icon(Icons.favorite)),
                 ],
               ),
@@ -496,7 +508,8 @@ class _HomePageState extends State<HomePage> with SeedColorMixin {
                 crossAxisAlignment: WrapCrossAlignment.center,
                 children: [
                   ElevatedButton(onPressed: () {}, child: const Text('ElevatedButton')),
-                  ElevatedButton.icon(onPressed: () {}, icon: const Icon(Icons.send), label: const Text('Elevated.icon')),
+                  ElevatedButton.icon(
+                      onPressed: () {}, icon: const Icon(Icons.send), label: const Text('Elevated.icon')),
                   ChoiceChip(label: const Text('未选中 Chip'), selected: false, onSelected: (_) {}),
                 ],
               ),
@@ -663,9 +676,14 @@ class _HomePageState extends State<HomePage> with SeedColorMixin {
 
   /// ColorScheme 属性分组区块
   Widget buildSchemeSection({
-    required String title, required String subtitle, required Color swatchColor,
-    required ColorScheme colorScheme, required Widget child,
+    required String title,
+    required String subtitle,
+    required Color swatchColor,
+    required ColorScheme colorScheme,
+    required Widget child,
   }) {
+    final isDark = colorScheme.brightness == Brightness.dark;
+    final swatchBorder = resolveSwatchBorder(swatchColor, colorScheme);
     return Padding(
       padding: const EdgeInsets.only(bottom: 20),
       child: Column(
@@ -679,24 +697,34 @@ class _HomePageState extends State<HomePage> with SeedColorMixin {
                 decoration: BoxDecoration(
                   color: swatchColor,
                   borderRadius: BorderRadius.circular(4),
-                  border: Border.all(color: colorScheme.outlineVariant),
+                  // border: Border.all(color: swatchBorder),
                 ),
               ),
               const SizedBox(width: 8),
               Text(
                 title,
-                style: Theme.of(context).textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w700),
+                style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                      fontWeight: FontWeight.w700,
+                      color: colorScheme.onSurface,
+                    ),
               ),
             ],
           ),
           const SizedBox(height: 4),
           Text(
             subtitle,
-            style: Theme.of(context).textTheme.bodySmall,
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                  color: colorScheme.onSurfaceVariant,
+                ),
           ),
           const SizedBox(height: 8),
           Card(
             elevation: 0,
+            color: isDark ? colorScheme.surfaceContainerHigh : colorScheme.surfaceContainerLowest,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+              side: BorderSide(color: colorScheme.outlineVariant),
+            ),
             child: Padding(
               padding: const EdgeInsets.all(12),
               child: child,
@@ -705,5 +733,15 @@ class _HomePageState extends State<HomePage> with SeedColorMixin {
         ],
       ),
     );
+  }
+
+  /// 色块边框：避免与背景同亮度时看不见
+  Color resolveSwatchBorder(Color swatchColor, ColorScheme colorScheme) {
+    final swatchBright = ThemeData.estimateBrightnessForColor(swatchColor);
+    final surfaceBright = colorScheme.brightness;
+    if (swatchBright == surfaceBright) {
+      return colorScheme.outline;
+    }
+    return colorScheme.outlineVariant;
   }
 }
