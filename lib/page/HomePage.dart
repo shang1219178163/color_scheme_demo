@@ -88,10 +88,10 @@ class _HomePageState extends State<HomePage> with SeedColorMixin {
                 ),
                 const SizedBox(height: 24),
                 // 配色方案展示
-                _buildColorSchemeDisplay(colorScheme),
+                buildColorSchemeDisplay(colorScheme),
                 const SizedBox(height: 24),
                 // UI 组件示例
-                _buildComponentExamples(colorScheme),
+                buildComponentExamples(colorScheme),
               ],
             ),
           ),
@@ -100,7 +100,7 @@ class _HomePageState extends State<HomePage> with SeedColorMixin {
     );
   }
 
-  Widget _buildColorSchemeDisplay(ColorScheme colorScheme) {
+  Widget buildColorSchemeDisplay(ColorScheme colorScheme) {
     return Card(
       elevation: 2,
       child: Padding(
@@ -119,62 +119,62 @@ class _HomePageState extends State<HomePage> with SeedColorMixin {
             const SizedBox(height: 16),
 
             // 主要颜色
-            _buildColorItem('primary', colorScheme.primary, colorScheme.onPrimary),
-            _buildColorItem('onPrimary', colorScheme.onPrimary, colorScheme.primary),
-            _buildColorItem('primaryContainer', colorScheme.primaryContainer, colorScheme.onPrimaryContainer),
-            _buildColorItem('onPrimaryContainer', colorScheme.onPrimaryContainer, colorScheme.primaryContainer),
+            buildColorItem('primary', colorScheme.primary, colorScheme.onPrimary),
+            buildColorItem('onPrimary', colorScheme.onPrimary, colorScheme.primary),
+            buildColorItem('primaryContainer', colorScheme.primaryContainer, colorScheme.onPrimaryContainer),
+            buildColorItem('onPrimaryContainer', colorScheme.onPrimaryContainer, colorScheme.primaryContainer),
 
             // 次要颜色
-            _buildColorItem('secondary', colorScheme.secondary, colorScheme.onSecondary),
-            _buildColorItem('onSecondary', colorScheme.onSecondary, colorScheme.secondary),
-            _buildColorItem('secondaryContainer', colorScheme.secondaryContainer, colorScheme.onSecondaryContainer),
-            _buildColorItem('onSecondaryContainer', colorScheme.onSecondaryContainer, colorScheme.secondaryContainer),
+            buildColorItem('secondary', colorScheme.secondary, colorScheme.onSecondary),
+            buildColorItem('onSecondary', colorScheme.onSecondary, colorScheme.secondary),
+            buildColorItem('secondaryContainer', colorScheme.secondaryContainer, colorScheme.onSecondaryContainer),
+            buildColorItem('onSecondaryContainer', colorScheme.onSecondaryContainer, colorScheme.secondaryContainer),
 
             // 三级颜色
-            _buildColorItem('tertiary', colorScheme.tertiary, colorScheme.onTertiary),
-            _buildColorItem('onTertiary', colorScheme.onTertiary, colorScheme.tertiary),
-            _buildColorItem('tertiaryContainer', colorScheme.tertiaryContainer, colorScheme.onTertiaryContainer),
-            _buildColorItem('onTertiaryContainer', colorScheme.onTertiaryContainer, colorScheme.tertiaryContainer),
+            buildColorItem('tertiary', colorScheme.tertiary, colorScheme.onTertiary),
+            buildColorItem('onTertiary', colorScheme.onTertiary, colorScheme.tertiary),
+            buildColorItem('tertiaryContainer', colorScheme.tertiaryContainer, colorScheme.onTertiaryContainer),
+            buildColorItem('onTertiaryContainer', colorScheme.onTertiaryContainer, colorScheme.tertiaryContainer),
 
             // 表面颜色
-            _buildColorItem('surface', colorScheme.surface, colorScheme.onSurface),
-            _buildColorItem('onSurface', colorScheme.onSurface, colorScheme.surface),
-            _buildColorItem('surfaceVariant', colorScheme.surfaceVariant, colorScheme.onSurfaceVariant),
-            _buildColorItem('onSurfaceVariant', colorScheme.onSurfaceVariant, colorScheme.surfaceVariant),
+            buildColorItem('surface', colorScheme.surface, colorScheme.onSurface),
+            buildColorItem('onSurface', colorScheme.onSurface, colorScheme.surface),
+            buildColorItem('surfaceVariant', colorScheme.surfaceVariant, colorScheme.onSurfaceVariant),
+            buildColorItem('onSurfaceVariant', colorScheme.onSurfaceVariant, colorScheme.surfaceVariant),
 
             // 背景颜色
-            _buildColorItem('background', colorScheme.background, colorScheme.onBackground),
-            _buildColorItem('onBackground', colorScheme.onBackground, colorScheme.background),
+            buildColorItem('background', colorScheme.background, colorScheme.onBackground),
+            buildColorItem('onBackground', colorScheme.onBackground, colorScheme.background),
 
             // 错误颜色
-            _buildColorItem('error', colorScheme.error, colorScheme.onError),
-            _buildColorItem('onError', colorScheme.onError, colorScheme.error),
-            _buildColorItem('errorContainer', colorScheme.errorContainer, colorScheme.onErrorContainer),
-            _buildColorItem('onErrorContainer', colorScheme.onErrorContainer, colorScheme.errorContainer),
+            buildColorItem('error', colorScheme.error, colorScheme.onError),
+            buildColorItem('onError', colorScheme.onError, colorScheme.error),
+            buildColorItem('errorContainer', colorScheme.errorContainer, colorScheme.onErrorContainer),
+            buildColorItem('onErrorContainer', colorScheme.onErrorContainer, colorScheme.errorContainer),
 
             // 轮廓颜色
-            _buildColorItem('outline', colorScheme.outline, colorScheme.background),
-            _buildColorItem('outlineVariant', colorScheme.outlineVariant, colorScheme.background),
+            buildColorItem('outline', colorScheme.outline, colorScheme.background),
+            buildColorItem('outlineVariant', colorScheme.outlineVariant, colorScheme.background),
 
             // 阴影颜色
-            _buildColorItem('shadow', colorScheme.shadow, Colors.white),
+            buildColorItem('shadow', colorScheme.shadow, Colors.white),
 
             // 表面色调颜色
-            _buildColorItem('surfaceTint', colorScheme.surfaceTint, Colors.white),
+            buildColorItem('surfaceTint', colorScheme.surfaceTint, Colors.white),
 
             // 反转表面颜色
-            _buildColorItem('inverseSurface', colorScheme.inverseSurface, colorScheme.onInverseSurface),
-            _buildColorItem('onInverseSurface', colorScheme.onInverseSurface, colorScheme.inverseSurface),
+            buildColorItem('inverseSurface', colorScheme.inverseSurface, colorScheme.onInverseSurface),
+            buildColorItem('onInverseSurface', colorScheme.onInverseSurface, colorScheme.inverseSurface),
 
             // 主要颜色反转
-            _buildColorItem('inversePrimary', colorScheme.inversePrimary, colorScheme.primary),
+            buildColorItem('inversePrimary', colorScheme.inversePrimary, colorScheme.primary),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildColorItem(String name, Color color, Color textColor) {
+  Widget buildColorItem(String name, Color color, Color textColor) {
     return Container(
       margin: const EdgeInsets.only(bottom: 8),
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
@@ -207,7 +207,7 @@ class _HomePageState extends State<HomePage> with SeedColorMixin {
 
   /// 按 ColorScheme 属性分组展示相关 Material 组件
   /// 按 ColorScheme 属性分组展示相关 Material 组件（颜色全部走主题，不二次赋值）
-  Widget _buildComponentExamples(ColorScheme colorScheme) {
+  Widget buildComponentExamples(ColorScheme colorScheme) {
     return Card(
       elevation: 2,
       child: Padding(
@@ -220,7 +220,7 @@ class _HomePageState extends State<HomePage> with SeedColorMixin {
               style: Theme.of(context).textTheme.titleMedium,
             ),
             const SizedBox(height: 16),
-            _buildSchemeSection(
+            buildSchemeSection(
               title: 'primary',
               swatchColor: colorScheme.primary,
               subtitle: 'FilledButton、Text/Outlined 文字、IconButton.filled、Switch、Checkbox、Slider、ProgressIndicator',
@@ -259,7 +259,7 @@ class _HomePageState extends State<HomePage> with SeedColorMixin {
                 ],
               ),
             ),
-            _buildSchemeSection(
+            buildSchemeSection(
               title: 'onPrimary',
               swatchColor: colorScheme.onPrimary,
               subtitle: 'primary 填充组件上的文本、Icon（见 FilledButton）',
@@ -270,7 +270,7 @@ class _HomePageState extends State<HomePage> with SeedColorMixin {
                 label: const Text('onPrimary 文本与图标'),
               ),
             ),
-            _buildSchemeSection(
+            buildSchemeSection(
               title: 'primaryContainer',
               swatchColor: colorScheme.primaryContainer,
               subtitle: 'FAB 背景（M3 默认）',
@@ -286,7 +286,7 @@ class _HomePageState extends State<HomePage> with SeedColorMixin {
                 ],
               ),
             ),
-            _buildSchemeSection(
+            buildSchemeSection(
               title: 'onPrimaryContainer',
               swatchColor: colorScheme.onPrimaryContainer,
               subtitle: 'FAB 图标/文字（随 primaryContainer）',
@@ -297,7 +297,7 @@ class _HomePageState extends State<HomePage> with SeedColorMixin {
                 label: const Text('onPrimaryContainer'),
               ),
             ),
-            _buildSchemeSection(
+            buildSchemeSection(
               title: 'secondary / secondaryContainer',
               swatchColor: colorScheme.secondaryContainer,
               subtitle: 'ChoiceChip、FilterChip、SegmentedButton、FilledButton.tonal、导航指示器（M3 默认 secondaryContainer）',
@@ -356,7 +356,7 @@ class _HomePageState extends State<HomePage> with SeedColorMixin {
                 ],
               ),
             ),
-            _buildSchemeSection(
+            buildSchemeSection(
               title: 'onSecondaryContainer',
               swatchColor: colorScheme.onSecondaryContainer,
               subtitle: 'tonal / Chip 选中态前景（见上方组件）',
@@ -367,7 +367,7 @@ class _HomePageState extends State<HomePage> with SeedColorMixin {
                 label: const Text('onSecondaryContainer'),
               ),
             ),
-            _buildSchemeSection(
+            buildSchemeSection(
               title: 'tertiary',
               swatchColor: colorScheme.tertiary,
               subtitle: '第三强调色；M3 少有默认组件直出，左侧色块即主题值',
@@ -377,7 +377,7 @@ class _HomePageState extends State<HomePage> with SeedColorMixin {
                 style: Theme.of(context).textTheme.bodyMedium,
               ),
             ),
-            _buildSchemeSection(
+            buildSchemeSection(
               title: 'surface',
               swatchColor: colorScheme.surface,
               subtitle: 'Scaffold、Card、Dialog、BottomSheet',
@@ -427,7 +427,7 @@ class _HomePageState extends State<HomePage> with SeedColorMixin {
                 ],
               ),
             ),
-            _buildSchemeSection(
+            buildSchemeSection(
               title: 'onSurface',
               swatchColor: colorScheme.onSurface,
               subtitle: '普通正文、主图标',
@@ -440,7 +440,7 @@ class _HomePageState extends State<HomePage> with SeedColorMixin {
                 ],
               ),
             ),
-            _buildSchemeSection(
+            buildSchemeSection(
               title: 'onSurfaceVariant',
               swatchColor: colorScheme.onSurfaceVariant,
               subtitle: '次要文本、辅助图标',
@@ -452,7 +452,7 @@ class _HomePageState extends State<HomePage> with SeedColorMixin {
                 subtitle: Text('副标题默认偏 onSurfaceVariant'),
               ),
             ),
-            _buildSchemeSection(
+            buildSchemeSection(
               title: 'surfaceContainer',
               swatchColor: colorScheme.surfaceContainer,
               subtitle: 'NavigationBar 背景等',
@@ -467,7 +467,7 @@ class _HomePageState extends State<HomePage> with SeedColorMixin {
                 ],
               ),
             ),
-            _buildSchemeSection(
+            buildSchemeSection(
               title: 'surfaceContainerLow',
               swatchColor: colorScheme.surfaceContainerLow,
               subtitle: 'ElevatedButton 背景、Chip 未选中',
@@ -483,7 +483,7 @@ class _HomePageState extends State<HomePage> with SeedColorMixin {
                 ],
               ),
             ),
-            _buildSchemeSection(
+            buildSchemeSection(
               title: 'outline',
               swatchColor: colorScheme.outline,
               subtitle: 'OutlinedButton 边框、TextField、IconButton.outlined',
@@ -509,7 +509,7 @@ class _HomePageState extends State<HomePage> with SeedColorMixin {
                 ],
               ),
             ),
-            _buildSchemeSection(
+            buildSchemeSection(
               title: 'outlineVariant',
               swatchColor: colorScheme.outlineVariant,
               subtitle: 'Divider（M3 默认）',
@@ -522,7 +522,7 @@ class _HomePageState extends State<HomePage> with SeedColorMixin {
                 ],
               ),
             ),
-            _buildSchemeSection(
+            buildSchemeSection(
               title: 'error',
               swatchColor: colorScheme.error,
               subtitle: 'ErrorText、Error Border、Badge',
@@ -542,14 +542,14 @@ class _HomePageState extends State<HomePage> with SeedColorMixin {
                 ],
               ),
             ),
-            _buildSchemeSection(
+            buildSchemeSection(
               title: 'onError',
               swatchColor: colorScheme.onError,
               subtitle: 'Badge 等内容在 error 上的前景',
               colorScheme: colorScheme,
               child: const Badge(label: Text('onError'), child: Icon(Icons.notifications)),
             ),
-            _buildSchemeSection(
+            buildSchemeSection(
               title: 'errorContainer / onErrorContainer',
               swatchColor: colorScheme.errorContainer,
               subtitle: '错误提示容器色；需业务 Theme 扩展时使用，左侧色块即主题值',
@@ -559,7 +559,7 @@ class _HomePageState extends State<HomePage> with SeedColorMixin {
                 style: Theme.of(context).textTheme.bodyMedium,
               ),
             ),
-            _buildSchemeSection(
+            buildSchemeSection(
               title: 'shadow',
               swatchColor: colorScheme.shadow,
               subtitle: 'Material elevation 阴影',
@@ -572,7 +572,7 @@ class _HomePageState extends State<HomePage> with SeedColorMixin {
                 ),
               ),
             ),
-            _buildSchemeSection(
+            buildSchemeSection(
               title: 'scrim',
               swatchColor: colorScheme.scrim,
               subtitle: 'Dialog / Drawer / BottomSheet 遮罩',
@@ -593,7 +593,7 @@ class _HomePageState extends State<HomePage> with SeedColorMixin {
                 child: const Text('打开 Dialog 查看 scrim'),
               ),
             ),
-            _buildSchemeSection(
+            buildSchemeSection(
               title: 'inverseSurface / onInverseSurface',
               swatchColor: colorScheme.inverseSurface,
               subtitle: 'SnackBar 背景与内容文字',
@@ -607,7 +607,7 @@ class _HomePageState extends State<HomePage> with SeedColorMixin {
                 child: const Text('显示 SnackBar'),
               ),
             ),
-            _buildSchemeSection(
+            buildSchemeSection(
               title: 'inversePrimary',
               swatchColor: colorScheme.inversePrimary,
               subtitle: 'SnackBar Action 强调色',
@@ -624,7 +624,7 @@ class _HomePageState extends State<HomePage> with SeedColorMixin {
                 child: const Text('显示带 Action 的 SnackBar'),
               ),
             ),
-            _buildSchemeSection(
+            buildSchemeSection(
               title: 'surfaceTint',
               swatchColor: colorScheme.surfaceTint,
               subtitle: 'Elevation surface tint（Material 默认）',
@@ -644,7 +644,7 @@ class _HomePageState extends State<HomePage> with SeedColorMixin {
   }
 
   /// ColorScheme 属性分组区块
-  Widget _buildSchemeSection({
+  Widget buildSchemeSection({
     required String title,
     required String subtitle,
     required Color swatchColor,
