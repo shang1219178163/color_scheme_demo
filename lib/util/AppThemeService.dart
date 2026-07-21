@@ -25,8 +25,8 @@ class AppThemeService {
   Brightness brightness = Brightness.light;
 
   /// 辅助色（M3 组件多走 secondaryContainer，需与 secondary 同源配置才会生效）
-  static const Color secondaryColor = Colors.orangeAccent;
-  static const Color onSecondaryColor = Colors.white;
+  static const Color onSecondaryColor = Colors.orangeAccent;
+  static const Color secondaryColor = Colors.yellow;
 
   // 基于种子颜色和亮度生成配色方案
   ColorScheme get colorScheme {
@@ -35,13 +35,13 @@ class AppThemeService {
       brightness: brightness,
       primary: seedColor,
       onPrimary: Colors.white,
-      // secondary: secondaryColor,
-      // onSecondary: onSecondaryColor,
+      secondary: secondaryColor,
+      onSecondary: onSecondaryColor,
       // M3 Chip / SegmentedButton / tonal / 导航指示器使用 Container 系列
-      secondaryContainer: Color.alphaBlend(secondaryColor.withValues(alpha: 0.28), const Color(0xfff6f6f6)),
-      onSecondaryContainer: const Color(0xFFE65100),
-      error: Colors.white,
-      onError: Colors.red,
+      // secondaryContainer: Color.alphaBlend(secondaryColor.withValues(alpha: 0.28), const Color(0xfff6f6f6)),
+      // onSecondaryContainer: onSecondaryColor.withValues(alpha: 0.8),
+      error: Colors.red,
+      onError: Colors.white,
       surface: const Color(0xfff6f6f6),
       onSurface: const Color(0xff181818),
       outline: seedColor,

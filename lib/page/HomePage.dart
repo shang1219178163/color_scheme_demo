@@ -334,19 +334,26 @@ class _HomePageState extends State<HomePage> with SeedColorMixin {
               swatchColor: colorScheme.onSecondary,
               subtitle: 'secondary 选中态上的文字/图标（Chip、SegmentedButton）',
               colorScheme: colorScheme,
-              child: Wrap(
-                spacing: 8,
-                runSpacing: 8,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  ChoiceChip(label: const Text('onSecondary 文字'), selected: true, onSelected: (_) {}),
-                  FilterChip(label: const Text('选中态前景'), selected: true, onSelected: (_) {}),
+                  Wrap(
+                    spacing: 8,
+                    runSpacing: 8,
+                    children: [
+                      ChoiceChip(label: const Text('onSecondary 文字'), selected: true, onSelected: (_) {}),
+                      FilterChip(label: const Text('选中态前景'), selected: true, onSelected: (_) {}),
+                    ],
+                  ),
+                  const SizedBox(height: 12),
                   SegmentedButton<int>(
                     segments: const [
-                      ButtonSegment(value: 0, label: Text('A')),
-                      ButtonSegment(value: 1, label: Text('B')),
+                      ButtonSegment(value: 0, label: Text('选项 A')),
+                      ButtonSegment(value: 1, label: Text('选项 B')),
                     ],
                     selected: const {0},
                     onSelectionChanged: (_) {},
+                    showSelectedIcon: false,
                   ),
                 ],
               ),
