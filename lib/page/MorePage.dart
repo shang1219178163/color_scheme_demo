@@ -41,7 +41,7 @@ class _MorePageState extends State<MorePage> {
       child: SingleChildScrollView(
         controller: scrollController,
         child: Container(
-          padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -51,7 +51,7 @@ class _MorePageState extends State<MorePage> {
                 onPressed: () {
                   AppNavigator.back({"class": "$widget", ...?widget.arguments});
                 },
-                child: Text('带参返回'),
+                child: const Text('带参返回'),
               ),
               TextButton(
                 onPressed: () {
@@ -63,7 +63,7 @@ class _MorePageState extends State<MorePage> {
                     },
                   );
                 },
-                child: Text('showSheet'),
+                child: const Text('showSheet'),
               ),
             ],
           ),
@@ -85,7 +85,7 @@ class _MorePageState extends State<MorePage> {
         decoration: BoxDecoration(
           color: Colors.transparent,
           border: Border.all(color: Colors.blue),
-          borderRadius: BorderRadius.all(Radius.circular(0)),
+          borderRadius: const BorderRadius.all(Radius.circular(0)),
         ),
         child: Center(
           child: GestureDetector(

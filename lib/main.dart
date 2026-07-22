@@ -1,5 +1,3 @@
-import 'package:color_scheme_demo/page/RestorationMixinDemo.dart';
-import 'package:color_scheme_demo/util/AppNavigator.dart';
 import 'package:color_scheme_demo/util/AppRouter.dart';
 import 'package:flutter/material.dart';
 

@@ -1,4 +1,3 @@
-import 'package:color_scheme_demo/util/AppThemeService.dart';
 import 'package:flutter/material.dart';
 
 import '../widget/drawer_left.dart';
@@ -19,16 +18,16 @@ class _HomePageTwoState extends State<HomePageTwo> with SingleTickerProviderStat
   double _rangeStart = 20;
   double _rangeEnd = 80;
   int _radioValue = 1;
-  int _selectedChip = 0;
+  final int _selectedChip = 0;
   String _selectedOption = '选项1';
   int _currentPage = 0;
   final PageController _pageController = PageController();
   final TextEditingController _textController = TextEditingController();
   bool _isExpanded = false;
-  bool _showBanner = true;
+  final bool _showBanner = true;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   late TabController _tabController;
-  bool _isSearching = false;
+  final bool _isSearching = false;
   String _searchQuery = '';
   final _formKey = GlobalKey<FormState>();
   DateTime? _selectedDate;
@@ -102,7 +101,7 @@ class _HomePageTwoState extends State<HomePageTwo> with SingleTickerProviderStat
               _buildAdvancedComponents(),
             ],
           ),
-          drawer: DrawerLeft(),
+          drawer: const DrawerLeft(),
           endDrawer: _buildEndDrawer(),
           bottomNavigationBar: NavigationBar(
             selectedIndex: _selectedIndex,
@@ -157,7 +156,7 @@ class _HomePageTwoState extends State<HomePageTwo> with SingleTickerProviderStat
           ]),
 
           _buildSectionTitle('卡片系列 (Cards)'),
-          Card(child: ListTile(title: const Text('Card'), subtitle: const Text('标准卡片'))),
+          const Card(child: ListTile(title: Text('Card'), subtitle: Text('标准卡片'))),
           const SizedBox(height: 8),
           // ElevatedCard(child: ListTile(title: const Text('ElevatedCard'), subtitle: const Text(' elevated卡片'))),
           // const SizedBox(height: 8),

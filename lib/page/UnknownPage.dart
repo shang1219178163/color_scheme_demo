@@ -7,7 +7,6 @@
 //
 import 'package:flutter/material.dart';
 import 'package:color_scheme_demo/util/AppRouter.dart';
-import 'package:color_scheme_demo/util/SheetUtil.dart';
 
 class UnknownPage extends StatefulWidget {
   const UnknownPage({
@@ -32,7 +31,7 @@ class _UnknownPageState extends State<UnknownPage> {
       },
       child: Scaffold(
         appBar: AppBar(
-          title: Text("404"),
+          title: const Text("404"),
         ),
         body: buildBody(),
       ),
@@ -46,10 +45,10 @@ class _UnknownPageState extends State<UnknownPage> {
         child: Column(
           children: <Widget>[
             Padding(
-              padding: EdgeInsets.symmetric(vertical: 8),
+              padding: const EdgeInsets.symmetric(vertical: 8),
               child: Text("$args"),
             ),
-            Padding(
+            const Padding(
               padding: EdgeInsets.symmetric(vertical: 8),
               child: Text('哎呀, 你的页面跑路了!'),
             ),
@@ -57,7 +56,7 @@ class _UnknownPageState extends State<UnknownPage> {
               onPressed: () {
                 DLog.d('哎呀, 你的页面跑路了!');
               },
-              child: Text('立即捉它回家!'),
+              child: const Text('立即捉它回家!'),
             ),
           ],
         ),

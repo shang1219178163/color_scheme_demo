@@ -36,7 +36,7 @@ class _TestPageState extends State<TestPage> {
                 Colors.green,
               ]);
             },
-            icon: Icon(
+            icon: const Icon(
               Icons.color_lens,
               color: Colors.blue,
             ),
@@ -76,7 +76,7 @@ class _TestPageState extends State<TestPage> {
                   body: Material(
                     color: item.isExpanded ? Colors.green : Colors.yellow,
                     child: Padding(
-                      padding: EdgeInsets.all(16),
+                      padding: const EdgeInsets.all(16),
                       child: Text(item.body),
                     ),
                   ),

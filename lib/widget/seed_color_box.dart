@@ -70,7 +70,7 @@ class _SeedColorBoxState extends State<SeedColorBox> {
                     decoration: BoxDecoration(
                       color: color,
                       borderRadius: BorderRadius.circular(8),
-                      border: AppThemeService.instance.seedColor.value == color.value
+                      border: AppThemeService.instance.seedColor == color
                           ? Border.all(
                               color: Theme.of(context).colorScheme.primary,
                               width: 3,
@@ -111,14 +111,14 @@ mixin SeedColorMixin<T extends StatefulWidget> on State<T> {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
-      constraints: BoxConstraints(
+      constraints: const BoxConstraints(
         minHeight: 200,
         maxHeight: 500,
       ),
       builder: (context) {
         return SingleChildScrollView(
           child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
             child: Column(
               children: [
                 SeedColorBox(
@@ -137,7 +137,7 @@ mixin SeedColorMixin<T extends StatefulWidget> on State<T> {
                     debugPrint("onBrightnessChanged $v");
                   },
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
               ],
             ),
           ),

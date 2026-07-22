@@ -1,4 +1,3 @@
-import 'package:color_scheme_demo/util/AppThemeService.dart';
 import 'package:flutter/material.dart';
 
 import '../widget/seed_color_box.dart';
@@ -54,15 +53,15 @@ class _HomePageOneState extends State<HomePageOne> with TickerProviderStateMixin
           foregroundColor: colorScheme.primary,
           elevation: 0,
           scrolledUnderElevation: 0,
-          titleTextStyle: TextStyle(
+          titleTextStyle: const TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.w500,
           ),
-          toolbarTextStyle: TextStyle(
+          toolbarTextStyle: const TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.w400,
           ),
-          actionsIconTheme: IconThemeData(
+          actionsIconTheme: const IconThemeData(
             size: 24.0, // 图标大小
             opacity: 0.8, // 图标透明度
           ),
@@ -71,7 +70,7 @@ class _HomePageOneState extends State<HomePageOne> with TickerProviderStateMixin
       child: Scaffold(
         appBar: AppBar(
           title: const Text('Material 3 组件全集'),
-          actions: [],
+          actions: const [],
           bottom: TabBar(
             controller: _tabController,
             tabs: const [
@@ -153,7 +152,7 @@ class _HomePageOneState extends State<HomePageOne> with TickerProviderStateMixin
                     title: const Text('卡片标题'),
                     subtitle: const Text('这是一个支持操作的卡片'),
                   ),
-                  ButtonBar(
+                  OverflowBar(
                     children: [
                       TextButton(onPressed: () {}, child: const Text('取消')),
                       FilledButton(onPressed: () {}, child: const Text('确定')),
@@ -359,8 +358,8 @@ class _HomePageOneState extends State<HomePageOne> with TickerProviderStateMixin
             ),
           ),
           const SizedBox(height: 12),
-          TextField(
-            decoration: const InputDecoration(
+          const TextField(
+            decoration: InputDecoration(
               labelText: '密码输入框',
               hintText: '请输入密码',
               prefixIcon: Icon(Icons.lock),
@@ -368,8 +367,8 @@ class _HomePageOneState extends State<HomePageOne> with TickerProviderStateMixin
             obscureText: true,
           ),
           const SizedBox(height: 12),
-          TextField(
-            decoration: const InputDecoration(
+          const TextField(
+            decoration: InputDecoration(
               labelText: '多行文本',
               hintText: '请输入多行内容',
               prefixIcon: Icon(Icons.subject),

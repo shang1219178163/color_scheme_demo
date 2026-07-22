@@ -150,12 +150,12 @@ class _HomePageState extends State<HomePage> with SeedColorMixin {
             // 表面颜色
             buildColorItem('surface', colorScheme.surface, colorScheme.onSurface),
             buildColorItem('onSurface', colorScheme.onSurface, colorScheme.surface),
-            buildColorItem('surfaceVariant', colorScheme.surfaceVariant, colorScheme.onSurfaceVariant),
-            buildColorItem('onSurfaceVariant', colorScheme.onSurfaceVariant, colorScheme.surfaceVariant),
+            buildColorItem('surfaceVariant', colorScheme.surfaceContainerHighest, colorScheme.onSurfaceVariant),
+            buildColorItem('onSurfaceVariant', colorScheme.onSurfaceVariant, colorScheme.surfaceContainerHighest),
 
             // 背景颜色
-            buildColorItem('background', colorScheme.background, colorScheme.onBackground),
-            buildColorItem('onBackground', colorScheme.onBackground, colorScheme.background),
+            buildColorItem('background', colorScheme.surface, colorScheme.onSurface),
+            buildColorItem('onBackground', colorScheme.onSurface, colorScheme.surface),
 
             // 错误颜色
             buildColorItem('error', colorScheme.error, colorScheme.onError),
@@ -164,8 +164,8 @@ class _HomePageState extends State<HomePage> with SeedColorMixin {
             buildColorItem('onErrorContainer', colorScheme.onErrorContainer, colorScheme.errorContainer),
 
             // 轮廓颜色
-            buildColorItem('outline', colorScheme.outline, colorScheme.background),
-            buildColorItem('outlineVariant', colorScheme.outlineVariant, colorScheme.background),
+            buildColorItem('outline', colorScheme.outline, colorScheme.surface),
+            buildColorItem('outlineVariant', colorScheme.outlineVariant, colorScheme.surface),
 
             // 阴影颜色
             buildColorItem('shadow', colorScheme.shadow, Colors.white),
@@ -226,7 +226,7 @@ class _HomePageState extends State<HomePage> with SeedColorMixin {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
+            const Text(
               'UI 组件示例（颜色走主题 ColorScheme）',
             ),
             const SizedBox(height: 16),

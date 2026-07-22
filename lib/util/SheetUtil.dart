@@ -12,8 +12,8 @@ class SheetUtil {
     final barrierColor = isDark ? Colors.black.withValues(alpha: 0.7) : Colors.black.withValues(alpha: 0.1);
     final borderColor = isDark ? Colors.black : Colors.white;
 
-    final titleColor = isDark ? Colors.white : Color(0xff313135);
-    final subtitleColor = isDark ? Colors.white.withValues(alpha: 0.8) : Color(0xff7C7C85);
+    final titleColor = isDark ? Colors.white : const Color(0xff313135);
+    final subtitleColor = isDark ? Colors.white.withValues(alpha: 0.8) : const Color(0xff7C7C85);
 
     return showModalBottomSheet(
       context: context,
@@ -70,12 +70,12 @@ class SheetUtil {
     required List<({String title, VoidCallback onTap})> items,
   }) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final backgroundColor = isDark ? Color(0xff181829) : Color(0xffF6F6F6);
-    final cardColor = isDark ? Color(0xff242434) : Colors.white;
+    final backgroundColor = isDark ? const Color(0xff181829) : const Color(0xffF6F6F6);
+    final cardColor = isDark ? const Color(0xff242434) : Colors.white;
 
-    final titleColor = isDark ? Colors.white : Color(0xff313135);
-    final subtitleColor = isDark ? Colors.white.withValues(alpha: 0.6) : Color(0xff7C7C85);
-    final cancelColor = Color(0xffE44554);
+    final titleColor = isDark ? Colors.white : const Color(0xff313135);
+    final subtitleColor = isDark ? Colors.white.withValues(alpha: 0.6) : const Color(0xff7C7C85);
+    const cancelColor = Color(0xffE44554);
 
     return showCustom(
       context: context,
@@ -95,7 +95,7 @@ class SheetUtil {
                 },
                 child: Container(
                   height: 50,
-                  margin: EdgeInsets.only(bottom: 1),
+                  margin: const EdgeInsets.only(bottom: 1),
                   decoration: BoxDecoration(
                     color: cardColor,
                   ),
@@ -111,7 +111,7 @@ class SheetUtil {
                 ),
               );
             }),
-            SizedBox(height: 8),
+            const SizedBox(height: 8),
             GestureDetector(
               child: Container(
                 height: 50,

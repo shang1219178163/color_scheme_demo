@@ -42,23 +42,23 @@ class AppRouter {
   static final List<AppPage> routes = [
     AppPage(
       name: AppRouter.notFoundPage,
-      page: (context) => UnknownPage(),
+      page: (context) => const UnknownPage(),
     ),
     AppPage(
       name: AppRouter.homePage,
-      page: (context) => HomePage(),
+      page: (context) => const HomePage(),
     ),
     AppPage(
       name: AppRouter.homePageOne,
-      page: (context) => HomePageOne(),
+      page: (context) => const HomePageOne(),
     ),
     AppPage(
       name: AppRouter.homePageTwo,
-      page: (context) => HomePageTwo(),
+      page: (context) => const HomePageTwo(),
     ),
     AppPage(
       name: AppRouter.restorationMixinDemo,
-      page: (context) => RestorationMixinDemo(),
+      page: (context) => const RestorationMixinDemo(),
     ),
     AppPage(
       name: AppRouter.morePage,
@@ -72,7 +72,7 @@ class AppRouter {
     ),
     AppPage(
       name: AppRouter.testPage,
-      page: (context) => TestPage(),
+      page: (context) => const TestPage(),
     ),
   ];
 }
