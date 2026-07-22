@@ -1,4 +1,4 @@
-import 'package:color_scheme_demo/util/AppThemeService.dart';
+import 'package:color_scheme_demo/util/app_theme_service.dart';
 import 'package:flutter/material.dart';
 
 class SeedColorBox extends StatefulWidget {

@@ -6,7 +6,7 @@
 //  Copyright © 5/20/21 shang. All rights reserved.
 //
 import 'package:flutter/material.dart';
-import 'package:color_scheme_demo/util/AppRouter.dart';
+import 'package:color_scheme_demo/util/app_router.dart';
 
 class UnknownPage extends StatefulWidget {
   const UnknownPage({

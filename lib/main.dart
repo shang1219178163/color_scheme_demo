@@ -1,4 +1,4 @@
-import 'package:color_scheme_demo/util/AppRouter.dart';
+import 'package:color_scheme_demo/util/app_router.dart';
 import 'package:flutter/material.dart';
 
 void main() {

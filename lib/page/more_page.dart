@@ -1,5 +1,5 @@
-import 'package:color_scheme_demo/util/AppNavigator.dart';
-import 'package:color_scheme_demo/util/SheetUtil.dart';
+import 'package:color_scheme_demo/util/app_navigator.dart';
+import 'package:color_scheme_demo/util/sheet_util.dart';
 import 'package:flutter/material.dart';
 
 class MorePage extends StatefulWidget {

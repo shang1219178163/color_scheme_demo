@@ -12,9 +12,6 @@ class SheetUtil {
     final barrierColor = isDark ? Colors.black.withValues(alpha: 0.7) : Colors.black.withValues(alpha: 0.1);
     final borderColor = isDark ? Colors.black : Colors.white;
 
-    final titleColor = isDark ? Colors.white : const Color(0xff313135);
-    final subtitleColor = isDark ? Colors.white.withValues(alpha: 0.8) : const Color(0xff7C7C85);
-
     return showModalBottomSheet(
       context: context,
       backgroundColor: backgroundColor,
@@ -74,8 +71,6 @@ class SheetUtil {
     final cardColor = isDark ? const Color(0xff242434) : Colors.white;
 
     final titleColor = isDark ? Colors.white : const Color(0xff313135);
-    final subtitleColor = isDark ? Colors.white.withValues(alpha: 0.6) : const Color(0xff7C7C85);
-    const cancelColor = Color(0xffE44554);
 
     return showCustom(
       context: context,

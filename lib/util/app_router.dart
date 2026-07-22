@@ -1,14 +1,14 @@
-import 'package:color_scheme_demo/page/MorePage.dart';
+import 'package:color_scheme_demo/page/more_page.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:color_scheme_demo/page/RestorationMixinDemo.dart';
-import 'package:color_scheme_demo/page/HomePage.dart';
-import 'package:color_scheme_demo/page/HomePageOne.dart';
-import 'package:color_scheme_demo/page/HomePageTwo.dart';
-import 'package:color_scheme_demo/page/UnknownPage.dart';
+import 'package:color_scheme_demo/page/restoration_mixin_demo.dart';
+import 'package:color_scheme_demo/page/home_page.dart';
+import 'package:color_scheme_demo/page/home_page_one.dart';
+import 'package:color_scheme_demo/page/home_page_two.dart';
+import 'package:color_scheme_demo/page/unknown_page.dart';
 
-import '../page/TestPage.dart';
+import '../page/test_page.dart';
 
-export 'AppNavigator.dart';
+export 'app_navigator.dart';
 
 /// 路由页面
 class AppPage {

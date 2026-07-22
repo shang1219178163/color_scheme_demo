@@ -24,7 +24,6 @@ class _HomePageTwoState extends State<HomePageTwo> with SingleTickerProviderStat
   final PageController _pageController = PageController();
   final TextEditingController _textController = TextEditingController();
   bool _isExpanded = false;
-  final bool _showBanner = true;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   late TabController _tabController;
   final bool _isSearching = false;
@@ -42,6 +41,8 @@ class _HomePageTwoState extends State<HomePageTwo> with SingleTickerProviderStat
   @override
   void dispose() {
     _tabController.dispose();
+    _pageController.dispose();
+    _textController.dispose();
     super.dispose();
   }
 
@@ -324,6 +325,7 @@ class _HomePageTwoState extends State<HomePageTwo> with SingleTickerProviderStat
               ],
             ),
           ),
+          Text('当前页: ${_currentPage + 1} / 3'),
           _buildSectionTitle('底部导航栏 (BottomNavigationBar)'),
           BottomNavigationBar(
             currentIndex: _selectedIndex,
@@ -377,6 +379,11 @@ class _HomePageTwoState extends State<HomePageTwo> with SingleTickerProviderStat
             hintText: '搜索...',
             onChanged: (value) => setState(() => _searchQuery = value),
           ),
+          if (_searchQuery.isNotEmpty)
+            Padding(
+              padding: const EdgeInsets.only(top: 8),
+              child: Text('搜索内容: $_searchQuery'),
+            ),
           _buildSectionTitle('选择控件 (Selections)'),
           Row(children: [
             Checkbox(value: _isChecked, onChanged: (v) => setState(() => _isChecked = v!)),
@@ -414,11 +421,13 @@ class _HomePageTwoState extends State<HomePageTwo> with SingleTickerProviderStat
           Wrap(spacing: 8, children: [
             FilledButton(
               onPressed: _showDatePicker,
-              child: const Text('日期选择'),
+              child: Text(_selectedDate == null
+                  ? '日期选择'
+                  : '${_selectedDate!.year}-${_selectedDate!.month.toString().padLeft(2, '0')}-${_selectedDate!.day.toString().padLeft(2, '0')}'),
             ),
             FilledButton(
               onPressed: _showTimePicker,
-              child: const Text('时间选择'),
+              child: Text(_selectedTime == null ? '时间选择' : _selectedTime!.format(context)),
             ),
           ]),
         ],
@@ -524,19 +533,6 @@ class _HomePageTwoState extends State<HomePageTwo> with SingleTickerProviderStat
           ),
         ],
       ),
-    );
-  }
-
-  Widget _buildDrawer() {
-    // return _buildEndDrawer();
-    return Drawer(
-      child: ListView(padding: EdgeInsets.zero, children: [
-        const DrawerHeader(decoration: BoxDecoration(color: Colors.blue), child: Text('Drawer Header')),
-        ListTile(leading: const Icon(Icons.home), title: const Text('首页'), onTap: () {}),
-        ListTile(leading: const Icon(Icons.settings), title: const Text('设置'), onTap: () {}),
-        const Divider(),
-        ListTile(leading: const Icon(Icons.info), title: const Text('关于'), onTap: () {}),
-      ]),
     );
   }
 

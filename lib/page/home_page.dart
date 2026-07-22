@@ -1,4 +1,4 @@
-import 'package:color_scheme_demo/util/AppRouter.dart';
+import 'package:color_scheme_demo/util/app_router.dart';
 import 'package:color_scheme_demo/util/page_capture.dart';
 import 'package:flutter/material.dart';
 
@@ -205,7 +205,7 @@ class _HomePageState extends State<HomePage> with SeedColorMixin {
             ),
           ),
           Text(
-            '#${color.value.toRadixString(16).padLeft(8, '0').toUpperCase()}',
+            '#${_colorToArgbHex(color)}',
             style: TextStyle(
               color: textColor,
               fontSize: 12,
@@ -214,6 +214,15 @@ class _HomePageState extends State<HomePage> with SeedColorMixin {
         ],
       ),
     );
+  }
+
+  /// 用 Color.a/r/g/b（0–1）拼出 ARGB hex，避免使用已弃用的 Color.value
+  String _colorToArgbHex(Color color) {
+    final argb = ((color.a * 255.0).round() & 0xff) << 24 |
+        ((color.r * 255.0).round() & 0xff) << 16 |
+        ((color.g * 255.0).round() & 0xff) << 8 |
+        ((color.b * 255.0).round() & 0xff);
+    return argb.toRadixString(16).padLeft(8, '0').toUpperCase();
   }
 
   /// 按 ColorScheme 属性分组展示相关 Material 组件

@@ -1,8 +1,8 @@
 import 'dart:convert';
 
-import 'package:color_scheme_demo/page/UnknownPage.dart';
+import 'package:color_scheme_demo/page/unknown_page.dart';
 import 'package:flutter/material.dart';
-import 'AppRouter.dart';
+import 'app_router.dart';
 
 export 'dlog.dart';
 

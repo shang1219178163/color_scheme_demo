@@ -1,4 +1,4 @@
-import 'package:color_scheme_demo/util/AppNavigator.dart';
+import 'package:color_scheme_demo/util/app_navigator.dart';
 import 'package:flutter/material.dart';
 
 class TestPage extends StatefulWidget {
