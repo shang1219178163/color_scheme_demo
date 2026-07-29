@@ -49,7 +49,7 @@ class _MorePageState extends State<MorePage> {
               Text("arguments: ${widget.arguments}"),
               TextButton(
                 onPressed: () {
-                  AppNavigator.back({"class": "$widget", ...?widget.arguments});
+                  AppNavigator.back(result: {"class": "$widget", ...?widget.arguments});
                 },
                 child: const Text('带参返回'),
               ),

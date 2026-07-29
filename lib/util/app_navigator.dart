@@ -6,7 +6,7 @@ import 'app_router.dart';
 
 export 'dlog.dart';
 
-/// 路由管理
+/// 路由管理（API 对齐 GetX 导航契约）
 class AppNavigator {
   static bool isLog = false;
 
@@ -41,8 +41,19 @@ class AppNavigator {
   static Object? get argumentsPre => routePre?.arguments;
   static String? get routeNamePre => routePre?.name;
 
+  /// 类似 Get.arguments
   static Object? get arguments => route?.arguments;
+
+  /// 类似 Get.currentRoute / Get.routing.current
   static String? get routeName => route?.name;
+  static String get currentRoute => routeName ?? '';
+
+  /// 类似 Get.parameters（从当前路由 URI query 解析）
+  static Map<String, String> get parameters {
+    final name = routeName;
+    if (name == null || name.isEmpty) return const {};
+    return Uri.tryParse(name)?.queryParameters ?? const {};
+  }
 
   /// 监听列表
   static final List<void Function({Route? from, Route? to})> _listeners = [];
@@ -67,120 +78,276 @@ class AppNavigator {
     }
   }
 
-  /// 匿名跳转（类似 Get.to）
-  static Future<T?> to<T>(Widget page, {Object? arguments}) {
+  /// 将 GetX 风格 parameters 拼进路由 URI
+  static String _withParameters(String page, Map<String, String>? parameters) {
+    if (parameters == null || parameters.isEmpty) return page;
+    final uri = Uri.tryParse(page);
+    if (uri == null) {
+      return Uri(path: page, queryParameters: parameters).toString();
+    }
+    return uri.replace(queryParameters: {
+      ...uri.queryParameters,
+      ...parameters,
+    }).toString();
+  }
+
+  /// 路由表查找只用 path，忽略 query
+  static String _routePath(String page) {
+    final uri = Uri.tryParse(page);
+    if (uri == null || uri.path.isEmpty) return page;
+    return uri.path;
+  }
+
+  static WidgetBuilder _builderFor(String page) {
+    return routeMap[_routePath(page)] ?? unknownPageBuilder;
+  }
+
+  /// **Navigation.push()** shortcut.（对齐 Get.to）
+  ///
+  /// 使用 `AppNavigator.to(() => Page())`，不要直接传 Widget 实例。
+  ///
+  /// 若因 [preventDuplicates] 未跳转，返回已完成的 `Future.value(null)`（非 null Future）。
+  static Future<T?> to<T>(
+    Widget Function() page, {
+    dynamic arguments,
+    bool preventDuplicates = true,
+    String? routeName,
+    bool fullscreenDialog = false,
+  }) {
+    // page 是工厂函数，runtimeType 是 Closure；用调用结果取页面类型作默认路由名
+    final widget = page();
+    routeName ??= '/${widget.runtimeType}';
+    if (!routeName.startsWith('/')) {
+      routeName = '/$routeName';
+    }
+    if (preventDuplicates && routeName == currentRoute) {
+      return Future<T?>.value(null);
+    }
     return navigator.push<T>(
-      MaterialPageRoute(builder: (_) => page, settings: RouteSettings(arguments: arguments)),
+      MaterialPageRoute<T>(
+        builder: (_) => widget,
+        fullscreenDialog: fullscreenDialog,
+        settings: RouteSettings(name: routeName, arguments: arguments),
+      ),
     );
   }
 
-  /// 命名跳转（类似 Get.toNamed）
-  static Future<T?>? toNamed<T>(String routeName, {Object? arguments}) {
-    final builder = routeMap[routeName] ?? unknownPageBuilder;
+  /// **Navigation.pushNamed()** shortcut.（对齐 Get.toNamed）
+  static Future<T?> toNamed<T>(
+    String page, {
+    dynamic arguments,
+    bool preventDuplicates = true,
+    Map<String, String>? parameters,
+  }) {
+    page = _withParameters(page, parameters);
+    if (preventDuplicates && _routePath(page) == _routePath(currentRoute)) {
+      return Future<T?>.value(null);
+    }
     return navigator.push<T>(
-      MaterialPageRoute(builder: builder, settings: RouteSettings(name: routeName, arguments: arguments)),
+      MaterialPageRoute<T>(
+        builder: _builderFor(page),
+        settings: RouteSettings(name: page, arguments: arguments),
+      ),
     );
   }
 
-  /// 替换当前页面（类似 Get.off）
-  static Future<T?> off<T>(Widget page, {Object? arguments}) {
-    return navigator.pushReplacement<T, T>(
-      MaterialPageRoute(builder: (_) => page, settings: RouteSettings(arguments: arguments)),
+  /// **Navigation.pushReplacement()** shortcut.（对齐 Get.off）
+  static Future<T?> off<T>(
+    Widget Function() page, {
+    dynamic arguments,
+    bool preventDuplicates = true,
+    String? routeName,
+    bool fullscreenDialog = false,
+  }) {
+    final widget = page();
+    routeName ??= '/${widget.runtimeType}';
+    if (!routeName.startsWith('/')) {
+      routeName = '/$routeName';
+    }
+    if (preventDuplicates && routeName == currentRoute) {
+      return Future<T?>.value(null);
+    }
+    return navigator.pushReplacement<T, Object?>(
+      MaterialPageRoute<T>(
+        builder: (_) => widget,
+        fullscreenDialog: fullscreenDialog,
+        settings: RouteSettings(name: routeName, arguments: arguments),
+      ),
     );
   }
 
-  /// 命名替换（类似 Get.offNamed）
-  static Future<T?>? offNamed<T>(String routeName, {Object? arguments}) {
-    final builder = routeMap[routeName] ?? unknownPageBuilder;
-    return navigator.pushReplacement<T, T>(
-      MaterialPageRoute(builder: builder, settings: RouteSettings(name: routeName, arguments: arguments)),
+  /// **Navigation.pushReplacementNamed()** shortcut.（对齐 Get.offNamed）
+  static Future<T?> offNamed<T>(
+    String page, {
+    dynamic arguments,
+    bool preventDuplicates = true,
+    Map<String, String>? parameters,
+  }) {
+    page = _withParameters(page, parameters);
+    if (preventDuplicates && _routePath(page) == _routePath(currentRoute)) {
+      return Future<T?>.value(null);
+    }
+    return navigator.pushReplacement<T, Object?>(
+      MaterialPageRoute<T>(
+        builder: _builderFor(page),
+        settings: RouteSettings(name: page, arguments: arguments),
+      ),
     );
   }
 
+  /// **Navigation.popUntil()** shortcut.（对齐 Get.until）
   static void until(RoutePredicate predicate) {
-    return navigator.popUntil(predicate);
+    navigator.popUntil(predicate);
   }
 
-  static Future<T?>? offUntil<T>(Route<T> page, RoutePredicate predicate) {
-    return navigator.pushAndRemoveUntil<T>(page, predicate);
+  /// **Navigation.pushAndRemoveUntil()** shortcut.（对齐 Get.offUntil）
+  static Future<T?> offUntil<T>(
+    Widget Function() page,
+    RoutePredicate predicate, {
+    Object? arguments,
+    String? routeName,
+  }) {
+    final widget = page();
+    routeName ??= '/${widget.runtimeType}';
+    if (!routeName.startsWith('/')) {
+      routeName = '/$routeName';
+    }
+    return navigator.pushAndRemoveUntil<T>(
+      MaterialPageRoute<T>(
+        builder: (_) => widget,
+        settings: RouteSettings(name: routeName, arguments: arguments),
+      ),
+      predicate,
+    );
   }
 
-  /// **Navigation.pushNamedAndRemoveUntil()** shortcut.
-  static Future<T?>? offNamedUntil<T>(
+  /// **Navigation.pushNamedAndRemoveUntil()** shortcut.（对齐 Get.offNamedUntil）
+  static Future<T?> offNamedUntil<T>(
     String page,
     RoutePredicate predicate, {
     dynamic arguments,
     Map<String, String>? parameters,
   }) {
-    if (parameters != null) {
-      final uri = Uri(path: page, queryParameters: parameters);
-      page = uri.toString();
-    }
-
-    return navigator.pushNamedAndRemoveUntil<T>(
-      page,
+    page = _withParameters(page, parameters);
+    return navigator.pushAndRemoveUntil<T>(
+      MaterialPageRoute<T>(
+        builder: _builderFor(page),
+        settings: RouteSettings(name: page, arguments: arguments),
+      ),
       predicate,
-      arguments: arguments,
     );
   }
 
-  /// **Navigation.popAndPushNamed()** shortcut.
-  static Future<T?>? offAndToNamed<T>(
+  /// **Navigation.popAndPushNamed()** shortcut.（对齐 Get.offAndToNamed）
+  static Future<T?> offAndToNamed<T>(
     String page, {
     dynamic arguments,
     dynamic result,
     Map<String, String>? parameters,
   }) {
-    if (parameters != null) {
-      final uri = Uri(path: page, queryParameters: parameters);
-      page = uri.toString();
+    page = _withParameters(page, parameters);
+    if (navigator.canPop()) {
+      navigator.pop(result);
     }
-    return navigator.popAndPushNamed(
-      page,
-      arguments: arguments,
-      result: result,
+    return navigator.push<T>(
+      MaterialPageRoute<T>(
+        builder: _builderFor(page),
+        settings: RouteSettings(name: page, arguments: arguments),
+      ),
     );
   }
 
-  /// **Navigation.removeRoute()** shortcut.
-  static void removeRoute(Route<dynamic> route) {
-    return navigator.removeRoute(route);
+  /// **Navigation.removeRoute()** shortcut.（对齐 Get.removeRoute(String name)）
+  static void removeRoute(String name) {
+    final path = _routePath(name);
+    PageRoute<Object?>? target;
+    for (var i = _pageRoutes.length - 1; i >= 0; i--) {
+      final route = _pageRoutes[i];
+      final routeName = route.settings.name;
+      if (routeName == name || _routePath(routeName ?? '') == path) {
+        target = route;
+        break;
+      }
+    }
+    if (target != null) {
+      navigator.removeRoute(target);
+      _pageRoutes.remove(target);
+    }
   }
 
-  /// 清空栈并跳转（类似 Get.offAll）
-  static Future<T?> offAll<T>(Widget page, {Object? arguments}) {
+  /// **Navigation.pushAndRemoveUntil()** shortcut.（对齐 Get.offAll）
+  static Future<T?> offAll<T>(
+    Widget Function() page, {
+    RoutePredicate? predicate,
+    dynamic arguments,
+    String? routeName,
+    bool fullscreenDialog = false,
+  }) {
+    final widget = page();
+    routeName ??= '/${widget.runtimeType}';
+    if (!routeName.startsWith('/')) {
+      routeName = '/$routeName';
+    }
     return navigator.pushAndRemoveUntil<T>(
-      MaterialPageRoute(builder: (_) => page, settings: RouteSettings(arguments: arguments)),
+      MaterialPageRoute<T>(
+        builder: (_) => widget,
+        fullscreenDialog: fullscreenDialog,
+        settings: RouteSettings(name: routeName, arguments: arguments),
+      ),
+      predicate ?? (route) => false,
+    );
+  }
+
+  /// **Navigation.pushNamedAndRemoveUntil()** shortcut.（对齐 Get.offAllNamed）
+  static Future<T?> offAllNamed<T>(
+    String page, {
+    dynamic arguments,
+    Map<String, String>? parameters,
+  }) {
+    page = _withParameters(page, parameters);
+    return navigator.pushAndRemoveUntil<T>(
+      MaterialPageRoute<T>(
+        builder: _builderFor(page),
+        settings: RouteSettings(name: page, arguments: arguments),
+      ),
       (route) => false,
     );
   }
 
-  /// 命名清栈跳转（类似 Get.offAllNamed）
-  static Future<T?>? offAllNamed<T>(String routeName, {Object? arguments}) {
-    final builder = routeMap[routeName] ?? unknownPageBuilder;
-
-    return navigator.pushAndRemoveUntil<T>(
-      MaterialPageRoute(builder: builder, settings: RouteSettings(name: routeName, arguments: arguments)),
-      (route) => false,
-    );
-  }
-
-  /// 返回上一级（类似 Get.back）
-  static void back<T>([T? result]) {
-    if (!navigator.canPop()) {
-      return;
-    }
-    return navigator.pop(result);
-  }
-
-  /// **Navigation.popUntil()** (with predicate) shortcut .
-  static void close(int times) {
+  /// **Navigation.pop()** shortcut.（对齐 Get.back）
+  ///
+  /// - [result] 返回给上一个路由
+  /// - [canPop] 为 true 时仅在 canPop 时 pop
+  /// - [times] 连续返回次数（`Get.back(times: 2)`）
+  static void back<T>({
+    T? result,
+    bool canPop = true,
+    int times = 1,
+  }) {
     if (times < 1) {
       times = 1;
     }
-    var count = 0;
-    var back = navigator.popUntil((route) => count++ == times);
-    return back;
+    if (times > 1) {
+      // popUntil 先判断当前栈顶：需弹出 times 次后再停下
+      var count = 0;
+      navigator.popUntil((_) => ++count > times);
+      return;
+    }
+    if (canPop) {
+      if (navigator.canPop()) {
+        navigator.pop(result);
+      }
+    } else {
+      navigator.pop(result);
+    }
+  }
+
+  /// 连续 pop [times] 次（经典 Get.close(times) 行为）。
+  ///
+  /// 新版 GetX 的 `close` 用于关闭 overlay；本项目无 overlay 栈，
+  /// 因此保留该常用语义，内部等价于 `back(times: times)`。
+  static void close(int times) {
+    back(times: times);
   }
 
   Map<String, dynamic> toJson() {
@@ -190,6 +357,7 @@ class AppNavigator {
     data['settingsPre'] = routePre.toString();
     data['routeNamePre'] = routeNamePre;
     data['routeName'] = routeName;
+    data['parameters'] = parameters;
     return data;
   }
 
@@ -223,7 +391,6 @@ class AppNavigatorObserver extends NavigatorObserver {
   @override
   void didPop(Route route, Route? previousRoute) {
     super.didPop(route, previousRoute);
-    // DLog.d(["didPop", route.settings, previousRoute?.settings].asMap());
     if (previousRoute is PageRoute) {
       AppNavigator._route = previousRoute.settings;
     }
@@ -242,7 +409,6 @@ class AppNavigatorObserver extends NavigatorObserver {
   @override
   void didReplace({Route? newRoute, Route? oldRoute}) {
     super.didReplace(newRoute: newRoute, oldRoute: oldRoute);
-    // DLog.d(["didReplace", newRoute?.settings, oldRoute?.settings].asMap());
     if (oldRoute is PageRoute) {
       AppNavigator._routePre = oldRoute.settings;
       AppNavigator._pageRoutes.remove(oldRoute);
@@ -256,6 +422,17 @@ class AppNavigatorObserver extends NavigatorObserver {
 
     if (AppNavigator.isLog) {
       DLog.d([newRoute?.settings.name, oldRoute?.settings.name, AppNavigator()].asMap());
+    }
+  }
+
+  @override
+  void didRemove(Route route, Route? previousRoute) {
+    super.didRemove(route, previousRoute);
+    if (route is PageRoute) {
+      AppNavigator._pageRoutes.remove(route);
+    }
+    if (previousRoute is PageRoute) {
+      AppNavigator._route = previousRoute.settings;
     }
   }
 }
