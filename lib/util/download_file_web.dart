@@ -13,7 +13,7 @@ void downloadFile({required Uint8List bytes, required String fileName}) {
   final anchor = web.HTMLAnchorElement()
     ..href = url
     ..download = fileName;
-  web.document.body?.append(anchor);
+  web.document.body?.appendChild(anchor);
   anchor.click();
   anchor.remove();
   web.URL.revokeObjectURL(url);
